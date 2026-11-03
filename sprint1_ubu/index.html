@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sprint 2 · Gestió de la informació del sistema i administració</title>
+<title>Sprint 1 . PINNING PACKET</title>
 <link rel="stylesheet" href="../css/estils.css">
 </head>
 <body>
@@ -16,8 +16,8 @@
     <a href="https://github.com/ismaPB/sistemes_operatius" target="_blank" rel="noopener">Codi a GitHub ↗</a>
   </nav>
   <div class="hero-titol">
-    <p class="miguetes"><a href="../index.html">Portada</a> / <a href="../sprints_ubu.html">Índex de sprints Ubuntu</a> / Sprint 2</p>
-    <h1>Sprint 2 · Gestió de la informació del sistema i administració</h1>
+    <p class="miguetes"><a href="../index.html">Portada</a> / <a href="../sprints_ubu.html">Índex de sprints Ubuntu</a> / Sprint 1</p>
+    <h1>Sprint 1 · Pinning Packet</h1>
     <p class="subtitol">Índex d'apartats d'aquest sprint</p>
   </div>
 </header>
@@ -30,117 +30,23 @@
         <tr><th>#</th><th>Apartat</th></tr>
       </thead>
       <tbody>
-        <tr><td>1</td><td><a href="#apartat1">Gestió d'usuaris i grups</a></td></tr>
-        <tr><td>2</td><td><a href="#apartat2">Gestió de processos del sistema</a></td></tr>
-        <tr><td>3</td><td><a href="#apartat3">Sistemes de fitxers, particions i recuperació</a></td></tr>
+        <tr><td>1</td><td><a href="#apartat1">Pinning Packet</a></td></tr>
       </tbody>
     </table>
 
     <article class="apartat" id="apartat1">
-      <h2>1. Gestió d'usuaris i grups</h2>
-      <p>Administració de comptes d'usuari, permisos i grups de treball en el servidor d'Ubuntu Linux[cite: 1, 3].</p>
-      
-      <h3>Nivell 0: Conèixer el sistema</h3>
-      <p>Comprovació del nostre usuari, identificadors UID/GID i la lectura dels fitxers <code>/etc/passwd</code>, <code>/etc/shadow</code> i del grup <code>sudo</code>[cite: 4, 7, 50].</p>
-      <img src="../img/sprint2_usuaris_nivell0.png" alt="Captura 1 - Exploració inicial del sistema i usuaris">
+      <h2>1. Pin a Packet</h2>
+      <p><strong>Us del pin a package amb snapd</strong></p>
 
-      <h3>Nivell 1: Contractacions</h3>
-      <p>Creació dels usuaris amb les eines <code>useradd</code>, <code>adduser</code> i l'entorn gràfic de configuració[cite: 5, 8, 9, 10, 50].</p>
-      <img src="../img/sprint2_usuaris_nivell1.png" alt="Captura 2 - Alta dels usuaris nuria, pau, marc, laia i sara">
-
-      <h3>Nivell 2: Primer dia (Inici de sessió)</h3>
-      <p>Comprovació dels inicis de sessió amb <code>su</code> i verificació dels fitxers i grups inicials assignats[cite: 5, 11, 51].</p>
-      <img src="../img/sprint2_usuaris_nivell2.png" alt="Captura 3 - Inicis de sessió i comprovació de directori personal">
-
-      <h3>Nivell 3: Departaments (Grups)</h3>
-      <p>Creació de grups de treball amb <code>groupadd</code> i <code>addgroup</code>, personalització de GID i eliminació de grups incorrectes amb <code>groupdel</code>[cite: 5, 12, 51].</p>
-      <img src="../img/sprint2_usuaris_nivell3.png" alt="Captura 4 - Llista de grups i eliminació del grup erroni">
-
-      <h3>Nivell 4: Equips</h3>
-      <p>Assignació d'usuaris als grups secundaris mitjançant <code>usermod -aG</code> i <code>gpasswd</code>[cite: 5, 6, 13, 52].</p>
-      <img src="../img/sprint2_usuaris_nivell4.png" alt="Captura 5 - Assignació als grups secundaris i comprovació de membres">
-
-      <h3>Nivell 5: Canvi de departament</h3>
-      <p>Canvi del grup principal d'un usuari amb <code>usermod -g</code> i comprovació de la propietat de nous fitxers[cite: 6, 14, 15, 52].</p>
-      <img src="../img/sprint2_usuaris_nivell5.png" alt="Captura 6 - Modificació del grup principal i verificació de fitxers">
-
-      <h3>Nivell 6: Bloqueig i desbloqueig</h3>
-      <p>Gestió del bloqueig de comptes amb <code>passwd -l</code> / <code>-u</code> i <code>usermod -L</code> / <code>-U</code>, comprovant la seguretat a <code>/etc/shadow</code>[cite: 4, 5, 15, 16, 52, 53].</p>
-      <img src="../img/sprint2_usuaris_nivell6.png" alt="Captura 7 - Bloqueig de comptes i modificació de contrasenya a shadow">
-
-      <h3>Nivell 7: Nova norma de noms</h3>
-      <p>Canvi de nom d'usuari, grup personal i la carpeta <code>/home</code> mantenint l'UID del compte[cite: 16, 17, 54].</p>
-      <img src="../img/sprint2_usuaris_nivell7.png" alt="Captura 8 - Redefinició del nom d'usuari i directori personal">
-
-      <h3>Nivell 8: Fi de pràctiques i neteja final</h3>
-      <p>Baixa d'usuaris amb <code>userdel</code>, neteja de la carpeta personal i eliminació de grups amb <code>delgroup</code>[cite: 5, 18, 54].</p>
-      <img src="../img/sprint2_usuaris_nivell8.png" alt="Captura 9 - Esborrat d'usuaris, directori personal orfe i estat final">
-
-      <p class="tornar-index"><a href="#index-apartats">↑ Tornar a l'índex</a></p>
-    </article>
-
-    <article class="apartat" id="apartat2">
-      <h2>2. Gestió de processos del sistema</h2>
-      <p>Control, diagnòstic, prioritats i gestió de senyals sobre els processos en executació[cite: 19, 29].</p>
-
-      <h3>Nivell 0: Preparar el cas</h3>
-      <p>Creació dels diferents scripts i assignació de permisos d'execució amb <code>chmod +x</code>[cite: 25, 26, 27, 46].</p>
-      <img src="../img/sprint2_processos_nivell0.png" alt="Captura 1 - Scripts preparats amb permisos d'execució">
-
-      <h3>Nivell 1: Reconeixement de processos</h3>
-      <p>Visualització de l'arbre de processos amb <code>pstree -p</code> localitzant els scripts orfes sota <code>systemd</code>[cite: 20, 23, 28, 29, 46].</p>
-      <img src="../img/sprint2_processos_nivell1.png" alt="Captura 2 - Arbre de processos del sistema amb pstree">
-
-      <h3>Nivell 2: Anàlisi de consum</h3>
-      <p>Monitorització de l'ús de CPU i memòria en temps real amb l'eina <code>top</code>[cite: 23, 29, 47].</p>
-      <img src="../img/sprint2_processos_nivell2.png" alt="Captura 3 - Pantalla de top ordenada pel consum de CPU">
-
-      <h3>Nivell 3: Interrogatori amb ps</h3>
-      <p>Filtratge avançat i identificació de PIDs usant <code>ps</code> i <code>pgrep</code>[cite: 23, 30, 47].</p>
-      <img src="../img/sprint2_processos_nivell3.png" alt="Captura 4 - Cerca i filtratge dels PIDs dels processos sospitosos">
-
-      <h3>Nivell 4: Control de primer i segon pla</h3>
-      <p>Pausa de tasques amb <code>Ctrl + Z</code>, i pas de processos entre segon (<code>bg</code>) i primer pla (<code>fg</code>)[cite: 21, 23, 31, 48].</p>
-      <img src="../img/sprint2_processos_nivell4.png" alt="Captura 5 - Gestió de treballs en primer i segon pla">
-
-      <h3>Nivell 5: Prioritat de processos (nice / renice)</h3>
-      <p>Modificació del valor <em>nice</em> d'un procés en marxa amb <code>sudo renice</code> per accelerar la descàrrega[cite: 22, 24, 32, 49].</p>
-      <img src="../img/sprint2_processos_nivell5.png" alt="Captura 6 - Augment de la prioritat del procés amb renice">
-
-      <h3>Nivell 6: Neutralització d'intrusos</h3>
-      <p>Enviament de senyals de terminació <code>SIGTERM</code> (15), finalització forçada <code>SIGKILL</code> (9) i congelació <code>SIGSTOP</code>/<code>SIGCONT</code>[cite: 22, 23, 33, 34, 47].</p>
-      <img src="../img/sprint2_processos_nivell6.png" alt="Captura 7 - Neutralització i control de senyals als processos">
-
-      <h3>Nivell 7: Persistència de processos</h3>
-      <p>Execució de tasques independents del terminal fent servir l'ordre <code>nohup</code>[cite: 22, 23, 34, 35].</p>
-      <img src="../img/sprint2_processos_nivell7.png" alt="Captura 8 - Prova de persistència de la descàrrega amb nohup">
-
-      <p class="tornar-index"><a href="#index-apartats">↑ Tornar a l'índex</a></p>
-    </article>
-
-    <article class="apartat" id="apartat3">
-      <h2>3. Sistemes de fitxers, particions i recuperació</h2>
-      <p>Estructuració del disc dur, definició de particions, muntatge persistent i recuperació de fitxers[cite: 36, 38, 43].</p>
-
-      <h3>Particionat i taula de particions MBR</h3>
-      <p>Creació d'una partició primària sobre un disc dur de 25 GB fent servir l'eina <code>fdisk</code>[cite: 43].</p>
-      <img src="../img/sprint2_particions_fdisk.png" alt="Captura - Creació de la partició amb fdisk">
-
-      <h3>Formateig i muntatge de la partició</h3>
-      <p>Creació del sistema de fitxers <code>ext4</code> especificant la mida de bloc a 2048 bytes i muntatge a <code>/mnt/particio1</code>[cite: 44].</p>
-      <img src="../img/sprint2_particions_mkfs.png" alt="Captura - Formateig ext4 i muntatge manual">
-
-      <h3>Muntatge automàtic persistent (/etc/fstab)</h3>
-      <p>Configuració de l'arxiu <code>/etc/fstab</code> associant el UUID obtingut amb <code>blkid</code>[cite: 45].</p>
-      <img src="../img/sprint2_particions_fstab.png" alt="Captura - Edició del fitxer /etc/fstab i comprovació amb df -hT">
-
-      <h3>Recuperació de dades després d'un formateig d'alt nivell</h3>
-      <p>Auditoria i recuperació de documents i fotografies amb <code>photorec</code> i verificació dels valors hash <code>sha256sum</code>[cite: 39, 40, 41, 42].</p>
-      <img src="../img/sprint2_recuperacio_photorec.png" alt="Captura - Recuperació de fitxers amb Photorec i verificació SHA-256">
-
-      <h3>Recuperació de text pla i eliminació permanent</h3>
-      <p>Cerca directament sobre la imatge de disc amb l'ordre <code>strings</code> i neteja total de dades (formateig de baix nivell) amb <code>dd</code>[cite: 39, 41, 42].</p>
-      <img src="../img/sprint2_recuperacio_strings.png" alt="Captura - Extracció de text pla amb strings i eliminació amb zeros">
+      <!-- Reproductor incrustat de Google Drive -->
+      <iframe 
+        src="https://drive.google.com/file/d/1wywgHrI1r3tP0fNqDGRXe6wbYjBjqbCj/preview"
+        width="100%"
+        height="480"
+        style="border: 0; border-radius: 8px;"
+        allow="autoplay; fullscreen"
+        allowfullscreen>
+      </iframe>
 
       <p class="tornar-index"><a href="#index-apartats">↑ Tornar a l'índex</a></p>
     </article>
