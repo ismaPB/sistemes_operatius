@@ -95,4 +95,303 @@
       <p>La fragmentació representa la pèrdua de rendiment o el desaprofitament de l'espai d'emmagatzematge:</p>
       <ul>
         <li><strong>Fragmentació interna:</strong> Ocorre quan la mida d'un fitxer no omple el bloc assignat sencer (per exemple, un arxiu de 100 bytes en un bloc de 4096 bytes en desaprofita 3996). Es pot minimitzar reduint la mida del bloc en formatejar.</li>
-        <li><strong>Fragmentació externa:</strong> Es produeix quan els arxius es desglossen en
+        <li><strong>Fragmentació externa:</strong> Es produeix quan els arxius es desglossen en fragments dispersos pel disc dur a causa de la manca d'espai contigu. Això alenteix la lectura mecànica i es resol executant eines de desfragmentació per reordenar els blocs.</li>
+      </ul>
+
+      <h3>1.5 Nivells de formateig i sistemes de fitxers</h3>
+      <p>Un <strong>sistema de fitxers</strong> és l'estructura que permet al sistema operatiu gestionar, cercar, llegir i escriure dades sobre una partició. La seva preparació o <strong>formateig</strong> pot ser de tres tipus:</p>
+      <ol>
+        <li><strong>Formateig de baix nivell:</strong> Realitzat a la fàbrica del disc; estableix físicament les pistes i els sectors, esborrant les dades de manera irreversible.</li>
+        <li><strong>Formateig de mig nivell:</strong> Defineix la taula de particions (MBR/GPT) i comprova si hi ha sectors malmesos.</li>
+        <li><strong>Formateig d'alt nivell:</strong> Aplicat pel sistema operatiu per esborrar l'estructura anterior i generar el nou sistema de fitxers. Cal ressaltar que en un formateig d'alt nivell ràpid només s'elimina la taula d'índexs, de manera que la informació roman físicament al disc fins que és sobreescrita per dades noves.</li>
+      </ol>
+
+      <h3>1.6 Pràctica de particionat, formateig i muntatge de discs (/dev/sdb)</h3>
+
+      <h4>Part 1. Particionat amb fdisk</h4>
+      <p>Inspecció inicial de les unitats d'emmagatzematge detectades al sistema:</p>
+      <img src="../img/0.1.png" alt="Execució de fdisk -l per llistar discos">
+
+      <p>Informació detallada del disc dur secundari de 25 GB (/dev/sdb):</p>
+      <img src="../img/0.2.png" alt="Detalls de la unitat /dev/sdb">
+
+      <p>Creació d'una nova partició primària usant l'eina fdisk:</p>
+      <img src="../img/0.3.png" alt="Creació de la partició amb fdisk">
+
+      <p>Verificació de la taula de particions MBR/DOS actualitzada (/dev/sdb1):</p>
+      <img src="../img/0.4.png" alt="Taula de particions amb /dev/sdb1 creada">
+
+      <h4>Part 2. Formateig i muntatge manual</h4>
+      <p>Formateig en ext4 establint una mida de bloc personalitzada de 2048 bytes (2k):</p>
+      <img src="../img/0.5.png" alt="Formateig ext4 amb bloc de 2048 bytes">
+
+      <p>Comprovació de la mida del bloc lògic i superblocs amb tune2fs:</p>
+      <img src="../img/0.6.png" alt="Comprovació de Block size amb tune2fs">
+
+      <p>Creació del directori /mnt/particio1 com a punt de muntatge:</p>
+      <img src="../img/0.7.png" alt="Creació de la carpeta /mnt/particio1">
+
+      <p>Muntatge explícit de la partició ext4:</p>
+      <img src="../img/0.8.png" alt="Muntatge manual amb l'ordre mount">
+
+      <p>Creació de directori i arxiu de prova dins de la partició:</p>
+      <img src="../img/0.9.png" alt="Creació de fitxers de prova a la partició">
+
+      <p>Desmuntatge de seguretat de la partició:</p>
+      <img src="../img/0.10.png" alt="Desmuntatge de la partició amb umount">
+
+      <h4>Part 3. Verificació i muntatge persistent (/etc/fstab)</h4>
+      <p>Comprovació de l'estat del directori abans de muntar:</p>
+      <img src="../img/0.11.png" alt="Comprovació de particio1 desmuntada">
+
+      <p>Muntatge i verificació de la capacitat i sistema de fitxers amb df -hT:</p>
+      <img src="../img/0.12.png" alt="Verificació del muntatge amb df -hT">
+
+      <p>Obtenció de l'identificador únic UUID de la partició amb blkid:</p>
+      <img src="../img/0.13.png" alt="Lectura del UUID amb blkid">
+
+      <p>Edició del fitxer /etc/fstab per establir el muntatge automàtic en l'arrencada:</p>
+      <img src="../img/0.14.png" alt="Configuració de l'arxiu /etc/fstab">
+
+      <p>Verificació final del muntatge persistent i del contingut de la partició:</p>
+      <img src="../img/0.15.png" alt="Comprovació final amb df -hT i ls">
+
+      <h3>1.7 Pràctica de recuperació de fitxers després d'un formateig</h3>
+
+      <h4>Pas 0. Preparació de l'entorn</h4>
+      <p>Instal·lació de l'eina de recuperació <code>testdisk</code> (que inclou <code>photorec</code>):</p>
+      <img src="../img/1.1.png" alt="Instal·lació de testdisk amb sudo apt install">
+
+      <p>Creació i accés a la carpeta de treball <code>~/practica</code>:</p>
+      <img src="../img/1.2.png" alt="Creació de la carpeta de treball practica">
+
+      <p>Creació del fitxer de text de prova <code>notes.txt</code>:</p>
+      <img src="../img/1.3.png" alt="Creació del fitxer notes.txt">
+
+      <p>Verificació del contingut de la carpeta:</p>
+      <img src="../img/1.4.png" alt="Comprovació del fitxer creat amb ls -l">
+
+      <h4>Part 1. Creació del disc virtual</h4>
+      <p>Generació d'un disc virtual de 200 MB omplert amb zeros mitjançant l'ordre <code>dd</code>:</p>
+      <img src="../img/1.5.png" alt="Generació de la imatge de disc virtual disc.img de 200MB">
+
+      <p>Comprovació de la mida i creació del fitxer d'imatge <code>disc.img</code>:</p>
+      <img src="../img/1.6.png" alt="Verificació de disc.img amb ls -lh">
+
+      <h4>Part 2. Formateig del disc i emmagatzematge de dades</h4>
+      <p>Aplicació d'un sistema de fitxers <code>ext4</code> sobre la imatge de disc:</p>
+      <img src="../img/1.7.png" alt="Formateig d'alt nivell ext4 sobre la imatge">
+
+      <p>Creació del punt de muntatge <code>/mnt/prova</code> i muntatge del disc virtual:</p>
+      <img src="../img/1.8.png" alt="Muntatge del disc virtual a /mnt/prova">
+
+      <p>Còpia dels fitxers de prova (imatge, PDF i text) al directori de muntatge:</p>
+      <img src="../img/1.9.png" alt="Còpia dels arxius originals al punt de muntatge">
+
+      <p>Càlcul i desat del hash SHA-256 dels fitxers originals com a empremta digital:</p>
+      <img src="../img/1.10.png" alt="Generació del fitxer originals.sha amb els hashes dels fitxers">
+
+      <h4>Part 2.5 i Part 3. Formateig d'alt nivell</h4>
+      <p>Desmuntatge del disc virtual abans d'aplicar el nou formateig:</p>
+      <img src="../img/1.11.png" alt="Desmuntatge de /mnt/prova amb sudo umount">
+
+      <p>Formateig d'alt nivell conservant les dades al disc (opció <code>-E nodiscard</code>):</p>
+      <img src="../img/1.12.png" alt="Formateig d'alt nivell ext4 amb l'opció nodiscard">
+
+      <p>Comprovació del disc aparentment buit (només conté la carpeta <code>lost+found</code>):</p>
+      <img src="../img/1.13.png" alt="Comprovació del contingut del disc després del formateig">
+
+      <p>Segon desmuntatge del disc virtual per iniciar la fase de recuperació:</p>
+      <img src="../img/1.14.png" alt="Desmuntatge del disc virtual">
+
+      <h4>Part 4. Recuperació de fitxers amb PhotoRec</h4>
+      <p>Execució de l'eina <code>photorec</code> per escanear l'estructura de la imatge de disc:</p>
+      <img src="../img/1.15.png" alt="Execució de l'ordre photorec">
+
+      <p>Llistat dels fitxers recuperats a la carpeta <code>recup.1</code>:</p>
+      <img src="../img/1.16.png" alt="Fitxers recuperats per PhotoRec">
+
+      <p>Comprovació i comparació dels valors hash SHA-256 entre els fitxers originals i els recuperats:</p>
+      <img src="../img/1.17.png" alt="Verificació dels valors hash SHA-256">
+
+      <p>Recuperació del text contingut al fitxer unstructurat <code>notes.txt</code> mitjançant l'extracció de cadenes amb <code>strings</code> i <code>grep</code>:</p>
+      <img src="../img/1.18.png" alt="Recuperació del text pla amb l'ordre strings">
+
+      <h4>Part 5. Esborrat de baix nivell, comprovació final i neteja</h4>
+      <p>Sobreescriptura completa de la imatge de disc amb zeros fent servir <code>dd</code> (formateig de baix nivell):</p>
+      <img src="../img/1.19.png" alt="Esborrat de baix nivell omplint el disc amb zeros usant dd">
+
+      <p>Verificació que <code>photorec</code> ja no troba cap fitxer recuperable després de l'esborrat físic:</p>
+      <img src="../img/1.20.png" alt="Verificació final de photorec sense fitxers trobats">
+
+      <p>Comprovació que la cerca amb <code>strings</code> i <code>grep</code> tampoc no retorna cap resultat:</p>
+      <img src="../img/1.21.png" alt="Cerca de cadena amb strings sense cap resultat">
+
+      <p>Neteja dels fitxers temporals, discs virtuals i carpetes de recuperació creades durant la pràctica:</p>
+      <img src="../img/1.22.png" alt="Eliminació de fitxers temporals amb rm -rf">
+
+      <h4>Qüestionari de la pràctica de recuperació</h4>
+      <div class="qüestionari">
+        <ol>
+          <li>
+            <strong>Després de la part 3, el disc semblava buit. On eren realment els teus fitxers?</strong>
+            <p>El disc semblava buit però no ho estava, ja que el que hem fet ha sigut eliminar l'estructura del sistema de fitxers, però les dades dels fitxers encara romanien físicament al disc.</p>
+          </li>
+          <li>
+            <strong>Per què els fitxers recuperats tenen noms diferents dels originals?</strong>
+            <p>Perquè el nom de l'arxiu es guarda a la taula d'índexs del sistema de fitxers. En esborrar-la, <code>photorec</code> no pot conèixer el nom original i assigna a cada fitxer un número segons la posició del disc on l'ha trobat.</p>
+          </li>
+          <li>
+            <strong>Com pots demostrar que la foto recuperada és exactament la mateixa que l'original?</strong>
+            <p>Comparant el valor de la seua empremta digital o hash SHA-256 (generat prèviament amb <code>sha256sum</code>), comprovant que coincideix byte a byte amb l'original.</p>
+          </li>
+          <li>
+            <strong>Per què <code>photorec</code> ha trobat la foto i el PDF, però no el <code>notes.txt</code>? Com l'has trobat igualment?</strong>
+            <p>Perquè els fitxers de text pla (<code>.txt</code>) no tenen una capçalera o signatura fixa com les imatges o els PDF. L'hem trobat directament buscant la seua informació al disc amb l'ordre <code>strings</code>, ja que es troba escrita en text pla.</p>
+          </li>
+          <li>
+            <strong>Quin nivell de formateig has fet a la part 3 i quin a la part 5?</strong>
+            <p>A la part 3 s'ha realitzat un formateig d'alt nivell (reconstrucció del sistema de fitxers sense esborrar dades) i a la part 5 un formateig de baix nivell (sobreescriptura completa del disc amb zeros).</p>
+          </li>
+          <li>
+            <strong>Vols vendre un USB on tenies fotos personals. Quin formateig faries abans de vendre'l i per què?</strong>
+            <p>Faria un formateig de baix nivell per assegurar-me que es sobreescriuen totes les dades amb zeros i així evitar que ningú puga recuperar les meues fotos privades amb eines d'auditoria.</p>
+          </li>
+        </ol>
+      </div>
+
+      <p class="tornar-index"><a href="#index-apartats">↑ Tornar a l'índex</a></p>
+    </article>
+
+    <article class="apartat" id="apartat2">
+      <h2>2. Gestió d'usuaris i grups</h2>
+      <p>Administració de comptes d'usuari, permisos i grups de treball en el servidor d'Ubuntu Linux corresponent al cas pràctic de <strong>PixelForge</strong>.</p>
+      
+      <h3>Nivell 0: Conèixer el sistema</h3>
+      <p>Exploració inicial dels identificadors (UID/GID), permisos sobre <code>/etc/shadow</code> i comprovació del grup <code>sudo</code> per a l'usuari personal:</p>
+      <img src="../img/3.1.png" alt="Exploració inicial de l'usuari personal a /etc/passwd i /etc/shadow">
+
+      <p>Verificació dels privilegis i identificadors de l'usuari superusuari <code>root</code> (UID 0):</p>
+      <img src="../img/3.2.png" alt="Comprovació de l'usuari root a /etc/passwd">
+
+      <h3>Nivell 1: Contractacions</h3>
+      <p>Comprovació global dels comptes creats per a l'estudi a <code>/etc/passwd</code> i les seues carpetes a <code>/home</code>:</p>
+      <img src="../img/3.3.png" alt="Verificació de tots els usuaris creats i les seues carpetes /home">
+
+      <p>Alta manual de l'usuària <code>sara</code> amb <code>useradd</code>, assignació de shell, comentari i contrasenya:</p>
+      <img src="../img/3.4.png" alt="Creació i configuració de l'usuària sara amb useradd i passwd">
+
+      <h3>Nivell 2: Primer dia (Inici de sessió)</h3>
+      <p>Comprovació de l'inici de sessió de <code>nuria</code> amb <code>su -</code> i verificació del directori personal:</p>
+      <img src="../img/3.5.png" alt="Inici de sessió com a nuria i verificació de la carpeta personal">
+
+      <p>Inici de sessió de <code>sara</code> i creació del seu primer fitxer de treball (<code>so_intro.wav</code>):</p>
+      <img src="../img/3.6.png" alt="Inici de sessió de sara i creació del fitxer de treball">
+
+      <h3>Nivell 3: Departaments (Grups)</h3>
+      <p>Llistat dels grups del sistema i eliminació del grup duplicat/erroni amb <code>groupdel</code>:</p>
+      <img src="../img/3.7.png" alt="Consulta de /etc/group i eliminació del grup erroni amb groupdel">
+
+      <p>Creació del grup <code>musica</code> especificant un GID personalitzat (2000) amb <code>groupadd -g</code>:</p>
+      <img src="../img/3.8.png" alt="Creació del grup musica amb GID 2000">
+
+      <h3>Nivell 4: Equips</h3>
+      <p>Assignació de grups secundaris a l'usuària <code>nuria</code> usant <code>usermod -aG</code> per evitar sobreescriure'ls:</p>
+      <img src="../img/3.9.png" alt="Afegit de grups secundaris amb usermod -aG">
+
+      <p>Verificació de la llista de membres assignats a cadascun dels grups de treball amb <code>getent group</code>:</p>
+      <img src="../img/3.10.png" alt="Comprovació dels membres de cada grup de treball amb getent group">
+
+      <p>Assignació de múltiples grups secundaris a l'usuària <code>sara</code> i comprovació dels identificadors amb <code>id</code>:</p>
+      <img src="../img/3.11.png" alt="Assignació dels grups musica i artistes a sara amb usermod -aG">
+
+      <h3>Nivell 5: Canvi de departament</h3>
+      <p>Inspecció de l'estat inicial dels grups de l'usuari <code>pau</code> abans de modificar el seu grup principal:</p>
+      <img src="../img/3.12.png" alt="Comprovació dels grups de pau amb la comanda id">
+
+      <p>Modificació del grup principal de <code>pau</code> al grup <code>programadors</code> mitjançant <code>usermod -g</code>:</p>
+      <img src="../img/3.13.png" alt="Canvi del grup principal de pau amb usermod -g">
+
+      <p>Verificació que els nous fitxers creats per <code>pau</code> s'assignen automàticament al seu nou grup principal:</p>
+      <img src="../img/3.14.png" alt="Comprovació del grup propietari dels arxius creats per pau">
+
+      <p>Canvi del grup principal de <code>sara</code> a <code>musica</code> i comprovació de la propietat dels seus nous arxius d'àudio:</p>
+      <img src="../img/3.15.png" alt="Canvi de grup principal de sara i creació de fitxer a la seua carpeta personal">
+
+      <h3>Nivell 6: Bloqueig i desbloqueig</h3>
+      <p>Comprovació del bloqueig de compte a <code>/etc/shadow</code> per a l'usuari <code>marc</code> i denegació de l'accés amb <code>su</code>:</p>
+      <img src="../img/3.16.png" alt="Bloqueig del compte de marc i prova fallida d'inici de sessió">
+
+      <p>Verificació de l'estat del compte desbloquejat de <code>marc</code> amb <code>passwd -S</code> i accés correcte:</p>
+      <img src="../img/3.17.png" alt="Desbloqueig de marc i inici de sessió viscut correctament">
+
+      <p>Proves de bloqueig i desbloqueig de comptes usant les opcions <code>usermod -L</code> i <code>usermod -U</code>:</p>
+      <img src="../img/3.18.png" alt="Bloqueig i desbloqueig de sara amb usermod -L i usermod -U">
+
+      <h3>Nivell 7: Nova norma de noms</h3>
+      <p>Reescriptura del nom d'usuari de <code>nuria</code> a <code>nvidal</code> mantenint l'UID 1004 original:</p>
+      <img src="../img/3.19.png" alt="Canvi del nom d'usuari de nuria a nvidal amb usermod -l">
+
+      <p>Verificació dels identificadors actualitzats i de la nova disposició a <code>/home</code>:</p>
+      <img src="../img/3.20.png" alt="Verificació dels grups i directori personal de nvidal">
+
+      <h3>Nivell 8: Fi de pràctiques i neteja final</h3>
+      <p>Eliminació de l'usuària <code>laia</code> amb <code>userdel</code>, comprovació del directori orfe (UID 1008), esborrat de la carpeta personal amb <code>rm -r</code>, eliminació del grup <code>becaris</code> amb <code>delgroup</code> i estat final del sistema:</p>
+      <img src="../img/3.21.png" alt="Baixa de laia, eliminació de directori orfe, esborrat de grup i comprovació final d'usuaris i grups">
+
+      <p class="tornar-index"><a href="#index-apartats">↑ Tornar a l'índex</a></p>
+    </article>
+
+    <article class="apartat" id="apartat3">
+      <h2>3. Gestió de processos del sistema</h2>
+      <p>Control, diagnòstic, prioritats i gestió de senyals sobre els processos en executació.</p>
+
+      <h3>Nivell 0: Preparar el cas</h3>
+      <p>Creació dels diferents scripts i assignació de permisos d'execució amb <code>chmod +x</code>.</p>
+      <img src="../img/sprint2_processos_nivell0.png" alt="Captura 1 - Scripts preparats amb permisos d'execució">
+
+      <h3>Nivell 1: Reconeixement de processos</h3>
+      <p>Visualització de l'arbre de processos amb <code>pstree -p</code> localitzant els scripts orfes sota <code>systemd</code>.</p>
+      <img src="../img/sprint2_processos_nivell1.png" alt="Captura 2 - Arbre de processos del sistema amb pstree">
+
+      <h3>Nivell 2: Anàlisi de consum</h3>
+      <p>Monitorització de l'ús de CPU i memòria en temps real amb l'eina <code>top</code>.</p>
+      <img src="../img/sprint2_processos_nivell2.png" alt="Captura 3 - Pantalla de top ordenada pel consum de CPU">
+
+      <h3>Nivell 3: Interrogatori amb ps</h3>
+      <p>Filtratge avançat i identificació de PIDs usant <code>ps</code> i <code>pgrep</code>.</p>
+      <img src="../img/sprint2_processos_nivell3.png" alt="Captura 4 - Cerca i filtratge dels PIDs dels processos sospitosos">
+
+      <h3>Nivell 4: Control de primer i segon pla</h3>
+      <p>Pausa de tasques amb <code>Ctrl + Z</code>, i pas de processos entre segon (<code>bg</code>) i primer pla (<code>fg</code>).</p>
+      <img src="../img/sprint2_processos_nivell4.png" alt="Captura 5 - Gestió de treballs en primer i segon pla">
+
+      <h3>Nivell 5: Prioritat de processos (nice / renice)</h3>
+      <p>Modificació del valor <em>nice</em> d'un procés en marxa amb <code>sudo renice</code> per accelerar la descàrrega.</p>
+      <img src="../img/sprint2_processos_nivell5.png" alt="Captura 6 - Augment de la prioritat del procés amb renice">
+
+      <h3>Nivell 6: Neutralització d'intrusos</h3>
+      <p>Enviament de senyals de terminació <code>SIGTERM</code> (15), finalització forçada <code>SIGKILL</code> (9) i congelació <code>SIGSTOP</code>/<code>SIGCONT</code>.</p>
+      <img src="../img/sprint2_processos_nivell6.png" alt="Captura 7 - Neutralització i control de senyals als processos">
+
+      <h3>Nivell 7: Persistència de processos</h3>
+      <p>Execució de tasques independents del terminal fent servir l'ordre <code>nohup</code>.</p>
+      <img src="../img/sprint2_processos_nivell7.png" alt="Captura 8 - Prova de persistència de la descàrrega amb nohup">
+
+      <p class="tornar-index"><a href="#index-apartats">↑ Tornar a l'índex</a></p>
+    </article>
+  </section>
+</main>
+
+<footer class="peu">
+  <p class="peu-llicencia">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ca" target="_blank" rel="license noopener">
+      <img src="https://licensebuttons.net/l/by-nc-sa/4.0/88x31.png" alt="Llicència Creative Commons Reconeixement-NoComercial-CompartirIgual 4.0" width="88" height="31">
+    </a>
+    <span>Contingut sota llicència <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ca" target="_blank" rel="license noopener">CC BY-NC-SA 4.0</a></span>
+  </p>
+  <p class="autoria">Autor/a: <strong>Ismail Eddabani</strong> · Pràctica 0 · Sistemes Operatius (ISOPJ1)</p>
+</footer>
+
+</body>
+</html>
