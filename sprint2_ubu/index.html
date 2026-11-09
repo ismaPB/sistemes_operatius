@@ -110,75 +110,74 @@
 
 <h4>Pas 0. Preparació de l'entorn</h4>
       <p>Instal·lació de l'eina de recuperació <code>testdisk</code> (que inclou <code>photorec</code>):</p>
-      <img src="../img/Captura de pantalla 2026-11-09 011353.png" alt="Instal·lació de testdisk amb sudo apt install">
+      <img src="../img/1.1.png" alt="Instal·lació de testdisk amb sudo apt install">
 
       <p>Creació i accés a la carpeta de treball <code>~/practica</code>:</p>
-      <img src="../img/Captura de pantalla 2026-11-09 011543.png" alt="Creació de la carpeta de treball practica">
+      <img src="../img/1.2.png" alt="Creació de la carpeta de treball practica">
 
       <p>Creació del fitxer de text de prova <code>notes.txt</code>:</p>
-      <img src="../img/Captura de pantalla 2026-11-09 011606.png" alt="Creació del fitxer notes.txt">
+      <img src="../img/1.3.png" alt="Creació del fitxer notes.txt">
 
       <p>Verificació del contingut de la carpeta:</p>
-      <img src="../img/Captura de pantalla 2026-11-09 011615.png" alt="Comprovació del fitxer creat amb ls -l">
+      <img src="../img/1.4.png" alt="Comprovació del fitxer creat amb ls -l">
 
       <h4>Part 1. Creació del disc virtual</h4>
       <p>Generació d'un disc virtual de 200 MB omplert amb zeros mitjançant l'ordre <code>dd</code>:</p>
-      <img src="../img/Captura de pantalla 2026-11-09 011622.png" alt="Generació de la imatge de disc virtual disc.img de 200MB">
+      <img src="../img/1.5.png" alt="Generació de la imatge de disc virtual disc.img de 200MB">
 
       <p>Comprovació de la mida i creació del fitxer d'imatge <code>disc.img</code>:</p>
-      <img src="../img/Captura de pantalla 2026-11-09 011629.png" alt="Verificació de disc.img amb ls -lh">
+      <img src="../img/1.6.png" alt="Verificació de disc.img amb ls -lh">
 
       <h4>Part 2. Formateig del disc i emmagatzematge de dades</h4>
       <p>Aplicació d'un sistema de fitxers <code>ext4</code> sobre la imatge de disc:</p>
-      <img src="../img/Captura de pantalla 2026-11-09 011644.png" alt="Formateig d'alt nivell ext4 sobre la imatge">
+      <img src="../img/1.7.png" alt="Formateig d'alt nivell ext4 sobre la imatge">
 
       <p>Creació del punt de muntatge <code>/mnt/prova</code> i muntatge del disc virtual:</p>
-      <img src="../img/Captura de pantalla 2026-11-09 011657.png" alt="Muntatge del disc virtual a /mnt/prova">
+      <img src="../img/1.8.png" alt="Muntatge del disc virtual a /mnt/prova">
 
       <p>Còpia dels fitxers de prova (imatge, PDF i text) al directori de muntatge:</p>
-      <img src="../img/Captura de pantalla 2026-11-09 011704.png" alt="Còpia dels arxius originals al punt de muntatge">
+      <img src="../img/1.9.png" alt="Còpia dels arxius originals al punt de muntatge">
 
       <p>Càlcul i desat del hash SHA-256 dels fitxers originals com a empremta digital:</p>
-      <img src="../img/Captura de pantalla 2026-11-09 011725.png" alt="Generació del fitxer originals.sha amb els hashes dels fitxers">
+      <img src="../img/1.10.png" alt="Generació del fitxer originals.sha amb els hashes dels fitxers">
 
       <h4>Part 2.5 i Part 3. Formateig d'alt nivell</h4>
       <p>Desmuntatge del disc virtual abans d'aplicar el nou formateig:</p>
-      <img src="../img/Captura de pantalla 2026-11-09 011732.png" alt="Desmuntatge de /mnt/prova amb sudo umount">
+      <img src="../img/1.11.png" alt="Desmuntatge de /mnt/prova amb sudo umount">
 
       <p>Formateig d'alt nivell conservant les dades al disc (opció <code>-E nodiscard</code>):</p>
-      <img src="../img/Captura de pantalla 2026-11-09 012217.png" alt="Formateig d'alt nivell ext4 amb l'opció nodiscard">
+      <img src="../img/1.12.png" alt="Formateig d'alt nivell ext4 amb l'opció nodiscard">
 
       <p>Comprovació del disc aparentment buit (només conté la carpeta <code>lost+found</code>):</p>
-      <img src="../img/Captura de pantalla 2026-11-09 012224.png" alt="Comprovació del contingut del disc després del formateig">
+      <img src="../img/1.13.png" alt="Comprovació del contingut del disc després del formateig">
 
       <p>Segon desmuntatge del disc virtual per iniciar la fase de recuperació:</p>
-      <img src="../img/Captura de pantalla 2026-11-09 012208.png" alt="Desmuntatge del disc virtual">
+      <img src="../img/1.14.png" alt="Desmuntatge del disc virtual">
 
       <h4>Part 4. Recuperació de fitxers amb PhotoRec</h4>
       <p>Execució de l'eina <code>photorec</code> per escanear l'estructura de la imatge de disc:</p>
-      <img src="../img/Captura de pantalla 2026-11-09 012232.png" alt="Execució de l'ordre photorec">
+      <img src="../img/1.15.png" alt="Execució de l'ordre photorec">
 
       <p>Llistat dels fitxers recuperats a la carpeta <code>recup.1</code>:</p>
-      <img src="../img/Captura de pantalla 2026-11-09 012247.png" alt="Fitxers recuperats per PhotoRec">
+      <img src="../img/1.16.png" alt="Fitxers recuperats per PhotoRec">
 
       <p>Comprovació i comparació dels valors hash SHA-256 entre els fitxers originals i els recuperats:</p>
-      <img src="../img/Captura de pantalla 2026-11-09 012255.png" alt="Verificació dels valors hash SHA-256">
+      <img src="../img/1.17.png" alt="Verificació dels valors hash SHA-256">
 
       <p>Recuperació del text contingut al fitxer unstructurat <code>notes.txt</code> mitjançant l'extracció de cadenes amb <code>strings</code> i <code>grep</code>:</p>
-      <img src="../img/Captura de pantalla 2026-11-09 012305.png" alt="Recuperació del text pla amb l'ordre strings">
+      <img src="../img/1.18.png" alt="Recuperació del text pla amb l'ordre strings">
 
       <h4>Part 5. Esborrat de baix nivell, comprovació final i neteja</h4>
       <p>Sobreescriptura completa de la imatge de disc amb zeros fent servir <code>dd</code> (formateig de baix nivell):</p>
-      <img src="../img/Captura de pantalla 2026-11-09 012312.png" alt="Esborrat de baix nivell omplint el disc amb zeros usant dd">
+      <img src="../img/1.19.png" alt="Esborrat de baix nivell omplint el disc amb zeros usant dd">
 
       <p>Verificació que <code>photorec</code> ja no troba cap fitxer recuperable després de l'esborrat físic:</p>
-      <img src="../img/Captura de pantalla 2026-11-09 012327.png" alt="Verificació final de photorec sense fitxers trobats">
+      <img src="../img/1.20.png" alt="Verificació final de photorec sense fitxers trobats">
 
       <p>Comprovació que la cerca amb <code>strings</code> i <code>grep</code> tampoc no retorna cap resultat:</p>
-      <img src="../img/Captura de pantalla 2026-11-09 012338.png" alt="Cerca de cadena amb strings sense cap resultat">
+      <img src="../img/1.21.png" alt="Cerca de cadena amb strings sense cap resultat">
 
       <p>Neteja dels fitxers temporals, discs virtuals i carpetes de recuperació creades durant la pràctica:</p>
-      <img src="../img/Captura de pantalla 2026-11-09 012358.png" alt="Eliminació de fitxers temporals amb rm -rf">
       
       <h4>Qüestionari de la pràctica de recuperació</h4>
       <div class="qüestionari">
