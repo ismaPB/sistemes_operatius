@@ -106,42 +106,136 @@
         <li><strong>Formateig d'alt nivell:</strong> Aplicat pel sistema operatiu per esborrar l'estructura anterior i generar el nou sistema de fitxers. Cal ressaltar que en un formateig d'alt nivell ràpid només s'elimina la taula d'índexs, de manera que la informació roman físicament al disc fins que és sobreescrita per dades noves.</li>
       </ol>
 
-      <h3>1.6 Pràctica de particionat, formateig i recuperació</h3>
-      <p>A continuació es mostren les tasques pràctiques realitzades sobre la gestió de particions i recuperació de fitxers:</p>
+      <h3>1.6 Pràctica de recuperació de fitxers després d'un formateig</h3>
 
+      <h4>Pas 0. Preparació de l'entorn</h4>
+      <p>Instal·lació de l'eina de recuperació <code>testdisk</code> (que inclou <code>photorec</code>):</p>
+      <img src="../img/image_8be977.png" alt="Instal·lació de testdisk amb sudo apt install">
+
+      <p>Creació i accés a la carpeta de treball <code>~/practica</code>:</p>
+      <img src="../img/image_8be937.png" alt="Creació de la carpeta de treball practica">
+
+      <p>Creació del fitxer de text de prova <code>notes.txt</code>:</p>
+      <img src="../img/image_8be919.png" alt="Creació del fitxer notes.txt">
+
+      <p>Verificació del contingut de la carpeta:</p>
+      <img src="../img/image_8be8fd.png" alt="Comprovació del fitxer creat amb ls -l">
+
+      <h4>Part 1. Creació del disc virtual</h4>
+      <p>Generació d'un disc virtual de 200 MB omplert amb zeros mitjançant l'ordre <code>dd</code>:</p>
+      <img src="../img/image_8be8e1.png" alt="Generació de la imatge de disc virtual disc.img de 200MB">
+
+      <p>Comprovació de la mida i creació del fitxer d'imatge <code>disc.img</code>:</p>
+      <img src="../img/image_8be62f.png" alt="Verificació de disc.img amb ls -lh">
+
+      <h4>Part 2. Formateig del disc i emmagatzematge de dades</h4>
+      <p>Aplicació d'un sistema de fitxers <code>ext4</code> sobre la imatge de disc:</p>
+      <img src="../img/image_8be610.png" alt="Formateig d'alt nivell ext4 sobre la imatge">
+
+      <p>Creació del punt de muntatge <code>/mnt/prova</code> i muntatge del disc virtual:</p>
+      <img src="../img/image_8be5f3.png" alt="Muntatge del disc virtual a /mnt/prova">
+
+      <p>Còpia dels fitxers de prova (imatge, PDF i text) al directori de muntatge:</p>
+      <img src="../img/image_8be5d2.png" alt="Còpia dels arxius originals al punt de muntatge">
+
+      <p>Càlcul i desat del hash SHA-256 dels fitxers originals com a empremta digital:</p>
+      <img src="../img/image_8be5b5.png" alt="Generació del fitxer originals.sha amb els hashes dels fitxers">
+
+      <h4>Part 2.5 i Part 3. Formateig d'alt nivell</h4>
+      <p>Desmuntatge del disc virtual abans d'aplicar el nou formateig:</p>
+      <img src="../img/image_8bda96.png" alt="Desmuntatge de /mnt/prova amb sudo umount">
+
+      <p>Formateig d'alt nivell conservant les dades al disc (opció <code>-E nodiscard</code>):</p>
+      <img src="../img/image_8bda8f.png" alt="Formateig d'alt nivell ext4 amb l'opció nodiscard">
+
+      <p>Comprovació del disc aparentment buit (només conté la carpeta <code>lost+found</code>):</p>
+      <img src="../img/image_8bda72.png" alt="Comprovació del contingut del disc després del formateig">
+
+      <p>Segon desmuntatge del disc virtual per iniciar la fase de recuperació:</p>
+      <img src="../img/image_8bda55.png" alt="Desmuntatge del disc virtual">
+
+      <h4>Part 4. Recuperació de fitxers amb PhotoRec</h4>
+      <p>Execució de l'eina <code>photorec</code> per escanear l'estructura de la imatge de disc:</p>
+      <img src="../img/image_8bda32.png" alt="Execució de l'ordre photorec">
+
+      <p>Llistat dels fitxers recuperats a la carpeta <code>recup.1</code>:</p>
+      <img src="../img/image_8bda16.png" alt="Fitxers recuperats per PhotoRec">
+
+      <p>Comprovació i comparació dels valors hash SHA-256 entre els fitxers originals i els recuperats:</p>
+      <img src="../img/image_8bd9f5.png" alt="Verificació dels valors hash SHA-256">
+
+      <p>Recuperació del text contingut al fitxer unstructurat <code>notes.txt</code> mitjançant l'extracció de cadenes amb <code>strings</code> i <code>grep</code>:</p>
+      <img src="../img/image_8bd9da.png" alt="Recuperació del text pla amb l'ordre strings">
+
+      <h4>Part 5. Esborrat de baix nivell, comprovació final i neteja</h4>
+      <p>Sobreescriptura completa de la imatge de disc amb zeros fent servir <code>dd</code> (formateig de baix nivell):</p>
+      <img src="../img/image_8bd732.png" alt="Esborrat de baix nivell omplint el disc amb zeros usant dd">
+
+      <p>Verificació que <code>photorec</code> ja no troba cap fitxer recuperable després de l'esborrat físic:</p>
+      <img src="../img/image_8bd72b.png" alt="Verificació final de photorec sense fitxers trobats">
+
+      <p>Comprovació que la cerca amb <code>strings</code> i <code>grep</code> tampoc no retorna cap resultat:</p>
+      <img src="../img/image_8bd6d5.png" alt="Cerca de cadena amb strings sense cap resultat">
+
+      <p>Neteja dels fitxers temporals, discs virtuals i carpetes de recuperació creades durant la pràctica:</p>
+      <img src="../img/image_8bd6cd.png" alt="Eliminació de fitxers temporals amb rm -rf">
+
+      <h4>Qüestionari de la pràctica de recuperació</h4>
+      <div class="qüestionari">
+        <ol>
+          <li>
+            <strong>Després de la part 3, el disc semblava buit. On eren realment els teus fitxers?</strong>
+            <p>El disc semblava buit però no ho estava, ja que el que hem fet ha sigut eliminar l'estructura del sistema de fitxers, però les dades dels fitxers encara romanien físicament al disc.</p>
+          </li>
+          <li>
+            <strong>Per què els fitxers recuperats tenen noms diferents dels originals?</strong>
+            <p>Perquè el nom de l'arxiu es guarda a la taula d'índexs del sistema de fitxers. En esborrar-la, <code>photorec</code> no pot conèixer el nom original i assigna a cada fitxer un número segons la posició del disc on l'ha trobat.</p>
+          </li>
+          <li>
+            <strong>Com pots demostrar que la foto recuperada és exactament la mateixa que l'original?</strong>
+            <p>Comparant el valor de la seua empremta digital o hash SHA-256 (generat prèviament amb <code>sha256sum</code>), comprovant que coincideix byte a byte amb l'original.</p>
+          </li>
+          <li>
+            <strong>Per què <code>photorec</code> ha trobat la foto i el PDF, però no el <code>notes.txt</code>? Com l'has trobat igualment?</strong>
+            <p>Perquè els fitxers de text pla (<code>.txt</code>) no tenen una capçalera o signatura fixa com les imatges o els PDF. L'hem trobat directament buscant la seua informació al disc amb l'ordre <code>strings</code>, ja que es troba escrita en text pla.</p>
+          </li>
+          <li>
+            <strong>Quin nivell de formateig has fet a la part 3 i quin a la part 5?</strong>
+            <p>A la part 3 s'ha realitzat un formateig d'alt nivell (reconstrucció del sistema de fitxers sense esborrar dades) i a la part 5 un formateig de baix nivell (sobreescriptura completa del disc amb zeros).</p>
+          </li>
+          <li>
+            <strong>Vols vendre un USB on tenies fotos personals. Quin formateig faries abans de vendre'l i per què?</strong>
+            <p>Faria un formateig de baix nivell per assegurar-me que es sobreescriuen totes les dades amb zeros i així evitar que ningú puga recuperar les meues fotos privades amb eines d'auditoria.</p>
+          </li>
+        </ol>
+      </div>
+
+      <h3>1.7 Pràctica de particionat, formateig i muntatge de discs</h3>
       <h4>Particionat i taula de particions MBR</h4>
-      <p>Creació d'una partició primària sobre un disc dur de 25 GB fent servir l'eina <code>fdisk</code>.</p>
+      <p>Configuració d'un disc dur secundari de 25 GB generant una taula de particions MBR/DOS i creant una partició primària <code>/dev/sdb1</code> amb l'eina <code>fdisk</code>.</p>
       <img src="../img/sprint2_particions_fdisk.png" alt="Captura - Creació de la partició amb fdisk">
 
       <h4>Formateig i muntatge de la partició</h4>
-      <p>Creació del sistema de fitxers <code>ext4</code> especificant la mida de bloc a 2048 bytes i muntatge a <code>/mnt/particio1</code>.</p>
+      <p>Creació del sistema de fitxers <code>ext4</code> especificant la mida de bloc a 2048 bytes (<code>mkfs.ext4 -b 2048</code>), creació del punt de muntatge <code>/mnt/particio1</code> i muntatge manual amb l'ordre <code>mount</code>.</p>
       <img src="../img/sprint2_particions_mkfs.png" alt="Captura - Formateig ext4 i muntatge manual">
 
       <h4>Muntatge automàtic persistent (/etc/fstab)</h4>
-      <p>Configuració de l'arxiu <code>/etc/fstab</code> associant el UUID obtingut amb <code>blkid</code>.</p>
+      <p>Obtenció del UUID únic amb <code>blkid</code> i configuració de l'arxiu <code>/etc/fstab</code> per a un muntatge automàtic en l'arrencada del sistema.</p>
       <img src="../img/sprint2_particions_fstab.png" alt="Captura - Edició del fitxer /etc/fstab i comprovació amb df -hT">
-
-      <h4>Recuperació de dades després d'un formateig d'alt nivell</h4>
-      <p>Auditoria i recuperació de documents i fotografies amb <code>photorec</code> i verificació dels valors hash <code>sha256sum</code>.</p>
-      <img src="../img/sprint2_recuperacio_photorec.png" alt="Captura - Recuperació de fitxers amb Photorec i verificació SHA-256">
-
-      <h4>Recuperació de text pla i eliminació permanent</h4>
-      <p>Cerca directament sobre la imatge de disc amb l'ordre <code>strings</code> i neteja total de dades (formateig de baix nivell) amb <code>dd</code>.</p>
-      <img src="../img/sprint2_recuperacio_strings.png" alt="Captura - Extracció de text pla amb strings i eliminació amb zeros">
 
       <p class="tornar-index"><a href="#index-apartats">↑ Tornar a l'índex</a></p>
     </article>
 
     <article class="apartat" id="apartat2">
       <h2>2. Gestió d'usuaris i grups</h2>
-      <p>Administració de comptes d'usuari, permisos i grups de treball en el servidor d'Ubuntu Linux.</p>
+      <p>Administració de comptes d'usuari, permisos i grups de treball en el servidor d'Ubuntu Linux corresponent al cas pràctic de <strong>PixelForge</strong>.</p>
       
       <h3>Nivell 0: Conèixer el sistema</h3>
       <p>Comprovació del nostre usuari, identificadors UID/GID i la lectura dels fitxers <code>/etc/passwd</code>, <code>/etc/shadow</code> i del grup <code>sudo</code>.</p>
       <img src="../img/sprint2_usuaris_nivell0.png" alt="Captura 1 - Exploració inicial del sistema i usuaris">
 
       <h3>Nivell 1: Contractacions</h3>
-      <p>Creació dels usuaris amb les eines <code>useradd</code>, <code>adduser</code> i l'entorn gràfic de configuració.</p>
+      <p>Creació dels usuaris amb les eines <code>useradd</code>, <code>adduser</code> i l'entorn gràfic de configuració per als integrants de l'estudi.</p>
       <img src="../img/sprint2_usuaris_nivell1.png" alt="Captura 2 - Alta dels usuaris nuria, pau, marc, laia i sara">
 
       <h3>Nivell 2: Primer dia (Inici de sessió)</h3>
