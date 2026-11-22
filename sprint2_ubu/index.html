@@ -347,36 +347,51 @@
       <p>Control, diagnòstic, prioritats i gestió de senyals sobre els processos en executació.</p>
 
       <h3>Nivell 0: Preparar el cas</h3>
-      <p>Creació dels diferents scripts i assignació de permisos d'execució amb <code>chmod +x</code>.</p>
-      <img src="../img/sprint2_processos_nivell0.png" alt="Captura 1 - Scripts preparats amb permisos d'execució">
+      <p>Llistat dels diferents scripts al directori de treball amb permisos d'execució assignats (<code>-rwxr-xr-x</code>):</p>
+      <img src="../img/2.0.1.png" alt="Llistat dels scripts preparats amb permisos d'execució">
+
+      <p>Execució inicial de <code>./sospitosos.sh</code> per llançar els processos que comprometen el rendiment del servidor:</p>
+      <img src="../img/2.0.2.png" alt="Execució inicial de sospitosos.sh">
 
       <h3>Nivell 1: Reconeixement de processos</h3>
-      <p>Visualització de l'arbre de processos amb <code>pstree -p</code> localitzant els scripts orfes sota <code>systemd</code>.</p>
-      <img src="../img/sprint2_processos_nivell1.png" alt="Captura 2 - Arbre de processos del sistema amb pstree">
+      <p>Visualització de l'arbre de processos amb <code>pstree -p</code>, localitzant els scripts orfes (<code>backup_nocturn</code>, <code>espia</code> i <code>minador</code>) penjant directament sota <code>systemd(3008)</code>:</p>
+      <img src="../img/2.1.png" alt="Arbre de processos del sistema amb pstree localitzant processos orfes">
 
       <h3>Nivell 2: Anàlisi de consum</h3>
-      <p>Monitorització de l'ús de CPU i memòria en temps real amb l'eina <code>top</code>.</p>
-      <img src="../img/sprint2_processos_nivell2.png" alt="Captura 3 - Pantalla de top ordenada pel consum de CPU">
+      <p>Monitorització de l'ús de CPU i memòria en temps real amb l'eina <code>top</code>, identificant els dos processos <code>minador</code> consumint el 100% d'un nucli de CPU:</p>
+      <img src="../img/2.2.png" alt="Pantalla de top ordenada pel consum de CPU">
 
       <h3>Nivell 3: Interrogatori amb ps</h3>
-      <p>Filtratge avançat i identificació de PIDs usant <code>ps</code> i <code>pgrep</code>.</p>
-      <img src="../img/sprint2_processos_nivell3.png" alt="Captura 4 - Cerca i filtratge dels PIDs dels processos sospitosos">
+      <p>Cerca i filtratge ràpid dels PIDs dels processos sospitosos usant <code>pgrep -l</code>:</p>
+      <img src="../img/2.3.1.png" alt="Cerca dels PIDs dels processos sospitosos amb pgrep">
+
+      <p>Consulta detallada d'identificadors, usuari, estat, temps d'execució i consum mitjançant <code>ps -o</code>:</p>
+      <img src="../img/2.3.2.png" alt="Informació detallada de cada procés amb ps -o">
+
+      <p>Verificació del procés pare (PPID 3008) confirmant que correspon a <code>systemd</code>:</p>
+      <img src="../img/2.3.3.png" alt="Identificació del procés pare systemd">
 
       <h3>Nivell 4: Control de primer i segon pla</h3>
-      <p>Pausa de tasques amb <code>Ctrl + Z</code>, i pas de processos entre segon (<code>bg</code>) i primer pla (<code>fg</code>).</p>
-      <img src="../img/sprint2_processos_nivell4.png" alt="Captura 5 - Gestió de treballs en primer i segon pla">
+      <p>Pausa de la tasca <code>./descarrega.sh</code> amb <code>Ctrl + Z</code>, inspecció amb <code>jobs -l</code>, i pas entre segon pla (<code>bg %1</code>) i primer pla (<code>fg %1</code>):</p>
+      <img src="../img/2.4.1.png" alt="Gestió de treballs en primer i segon pla amb jobs, bg i fg">
+
+      <p>Monitorització en temps real de l'avanç de la descàrrega mitjançant <code>watch -n 1 cat progres.txt</code>:</p>
+      <img src="../img/2.4.2.png" alt="Seguiment en temps real del fitxer progres.txt">
 
       <h3>Nivell 5: Prioritat de processos (nice / renice)</h3>
-      <p>Modificació del valor <em>nice</em> d'un procés en marxa amb <code>sudo renice</code> per accelerar la descàrrega.</p>
-      <img src="../img/sprint2_processos_nivell5.png" alt="Captura 6 - Augment de la prioritat del procés amb renice">
+      <p>Execució simultània de <code>top</code> i seguiment del progrés després d'ajustar la prioritat del procés per accelerar la descàrrega:</p>
+      <img src="../img/2.5.png" alt="Monitorització del rendiment i prioritat del procés descarrega.sh">
 
       <h3>Nivell 6: Neutralització d'intrusos</h3>
-      <p>Enviament de senyals de terminació <code>SIGTERM</code> (15), finalització forçada <code>SIGKILL</code> (9) i congelació <code>SIGSTOP</code>/<code>SIGCONT</code>.</p>
-      <img src="../img/sprint2_processos_nivell6.png" alt="Captura 7 - Neutralització i control de senyals als processos">
+      <p>Gestió de senyals sobre els processos sospitosos: resistència d'<code>espia</code> davant <code>SIGTERM</code> (15), finalització forçada amb <code>SIGKILL</code> (<code>kill -9</code>), i congelació/represa de <code>backup_nocturn</code> amb <code>SIGSTOP</code> i <code>SIGCONT</code>:</p>
+      <img src="../img/2.6.png" alt="Neutralització amb SIGKILL i control de senyals SIGSTOP/SIGCONT">
 
       <h3>Nivell 7: Persistència de processos</h3>
-      <p>Execució de tasques independents del terminal fent servir l'ordre <code>nohup</code>.</p>
-      <img src="../img/sprint2_processos_nivell7.png" alt="Captura 8 - Prova de persistència de la descàrrega amb nohup">
+      <p>Traçat de l'arbre de jerarquia completa de <code>descarrega.sh</code> fins a <code>systemd(1)</code> amb <code>pstree -ps</code>:</p>
+      <img src="../img/2.7.1.png" alt="Jerarquia del procés descarrega.sh amb pstree -ps">
+
+      <p>Comprovació final de la descàrrega completada amb èxit en 35 segons després d'executar-la en mode persistent amb <code>nohup</code>:</p>
+      <img src="../img/2.7.2.png" alt="Verificació de la descàrrega completada amb nohup">
 
       <p class="tornar-index"><a href="#index-apartats">↑ Tornar a l'índex</a></p>
     </article>
