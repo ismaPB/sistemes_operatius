@@ -31,6 +31,9 @@
       </thead>
       <tbody>
         <tr><td>1</td><td><a href="#apartat1">Sistemes de fitxers, particions i recuperació</a></td></tr>
+        <tr><td style="padding-left: 1.5rem;">1.1</td><td><a href="#apartat1-1">Teoria</a></td></tr>
+        <tr><td style="padding-left: 1.5rem;">1.2</td><td><a href="#apartat1-2">Pràctica 1: recuperació de fitxers</a></td></tr>
+        <tr><td style="padding-left: 1.5rem;">1.3</td><td><a href="#apartat1-3">Pràctica 2: particions i muntatge</a></td></tr>
         <tr><td>2</td><td><a href="#apartat2">Gestió d'usuaris i grups</a></td></tr>
         <tr><td>3</td><td><a href="#apartat3">Gestió de processos del sistema</a></td></tr>
         <tr><td>4</td><td><a href="#apartat4">Còpies de seguretat i automatització (Escape room · L'arxiu perdut)</a></td></tr>
@@ -38,233 +41,242 @@
       </tbody>
     </table>
 
+    <!-- APARTAT 1 -->
     <article class="apartat" id="apartat1">
       <h2>1. Sistemes de fitxers, particions i recuperació</h2>
       
-      <h3>1.1 Fonaments teòrics d'emmagatzematge</h3>
-      <p>Per comprendre com s'emmagatzema la informació en un ordinador, és fonamental diferenciar la disposició del maquinari de la gestió que en fa el sistema operatiu:</p>
-      <ul>
-        <li><strong>Arquitectura física:</strong> Fa referència als components materials i la distribució real de les dades al mitjà físic. En els discos durs mecànics (HDD), les dades es graven en plats magnètics dividits en cilindres, pistes, capçals i sectors. En canvi, les unitats sòlides (SSD) s'organitzen mitjançant cel·les de memòria flash distribuïdes en pàgines i blocs, sense cap mecanisme mòbil.</li>
-        <li><strong>Arquitectura lògica:</strong> És l'esquema conceptual que configura el sistema operatiu sobre el suport físic per fer-lo utilitzable. Engloba la delimitació de particions o volums, l'establiment del sistema de fitxers i l'assignació de la unitat mínima de treball lògica (blocs o clústers).</li>
-      </ul>
+      <div id="apartat1-1">
+        <h3>1.1 Teoria</h3>
+        
+        <h4>Fonaments teòrics d'emmagatzematge</h4>
+        <p>Per comprendre com s'emmagatzema la informació en un ordinador, és fonamental diferenciar la disposició del maquinari de la gestió que en fa el sistema operatiu:</p>
+        <ul>
+          <li><strong>Arquitectura física:</strong> Fa referència als components materials i la distribució real de les dades al mitjà físic. En els discos durs mecànics (HDD), les dades es graven en plats magnètics dividits en cilindres, pistes, capçals i sectors. En canvi, les unitats sòlides (SSD) s'organitzen mitjançant cel·les de memòria flash distribuïdes en pàgines i blocs, sense cap mecanisme mòbil.</li>
+          <li><strong>Arquitectura lògica:</strong> És l'esquema conceptual que configura el sistema operatiu sobre el suport físic per fer-lo utilitzable. Engloba la delimitació de particions o volums, l'establiment del sistema de fitxers i l'assignació de la unitat mínima de treball lògica (blocs o clústers).</li>
+        </ul>
 
-      <h3>1.2 Esquemes de particionat: MBR davant de GPT</h3>
-      <p>Abans de poder formatar i utilitzar qualsevol unitat, cal determinar quin tipus de taula de particions s'hi aplicarà:</p>
-      
-      <table>
-        <thead>
-          <tr>
-            <th>Característica</th>
-            <th>MBR (Master Boot Record)</th>
-            <th>GPT (GUID Partition Table)</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>Origen i estàndard</strong></td>
-            <td>Disseny tradicional vigent des de 1983.</td>
-            <td>Format modern vinculat als sistemes amb UEFI.</td>
-          </tr>
-          <tr>
-            <td><strong>Capacitat màxima</strong></td>
-            <td>Limitat a 2 TB per unitat de disc.</td>
-            <td>Admet més de 9,4 ZB (Zettabytes).</td>
-          </tr>
-          <tr>
-            <td><strong>Particions admeses</strong></td>
-            <td>Fins a 4 particions primàries (o 3 primàries i 1 estesa amb lògiques).</td>
-            <td>Permet fins a 128 particions primàries (en entorns Windows).</td>
-          </tr>
-          <tr>
-            <td><strong>Fiabilitat i redundància</strong></td>
-            <td>Manca de còpia de seguretat; si es corromp el sector d'arrencada es perd l'accés.</td>
-            <td>Inclou còpies de seguretat al final del disc i comprovacions de redundància cíclica (CRC).</td>
-          </tr>
-        </tbody>
-      </table>
+        <h4>Esquemes de particionat: MBR davant de GPT</h4>
+        <p>Abans de poder formatar i utilitzar qualsevol unitat, cal determinar quin tipus de taula de particions s'hi aplicarà:</p>
+        <table>
+          <thead>
+            <tr>
+              <th>Característica</th>
+              <th>MBR (Master Boot Record)</th>
+              <th>GPT (GUID Partition Table)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Origen i estàndard</strong></td>
+              <td>Disseny tradicional vigent des de 1983.</td>
+              <td>Format modern vinculat als sistemes amb UEFI.</td>
+            </tr>
+            <tr>
+              <td><strong>Capacitat màxima</strong></td>
+              <td>Limitat a 2 TB per unitat de disc.</td>
+              <td>Admet més de 9,4 ZB (Zettabytes).</td>
+            </tr>
+            <tr>
+              <td><strong>Particions admeses</strong></td>
+              <td>Fins a 4 particions primàries (o 3 primàries i 1 estesa amb lògiques).</td>
+              <td>Permet fins a 128 particions primàries (en entorns Windows).</td>
+            </tr>
+            <tr>
+              <td><strong>Fiabilitat i redundància</strong></td>
+              <td>Manca de còpia de seguretat; si es corromp el sector d'arrencada es perd l'accés.</td>
+              <td>Inclou còpies de seguretat al final del disc i comprovacions de redundància cíclica (CRC).</td>
+            </tr>
+          </tbody>
+        </table>
 
-      <h3>1.3 Unitats d'organització: Particions, Volums i Blocs</h3>
-      <ul>
-        <li><strong>Partició:</strong> Secció o divisió lògica independent delimitada dins d'una mateixa unitat física de disc.</li>
-        <li><strong>Volum:</strong> Estructura lògica d'un nivell superior que permet flexibilitzar l'espai, podent fusionar particions que pertanyen a diferents discos físics (mitjançant eines com LVM o RAID per programari).</li>
-        <li><strong>Sector (512 bytes):</strong> Unitat física mínima d'emmagatzematge establerta pel fabricant al disc dur.</li>
-        <li><strong>Bloc o Clúster (4096 bytes per defecte):</strong> Unitat mínima d'assignació lògica que empra el sistema de fitxers. Per defecte, un bloc lògic agrupa 8 sectors físics:
-          <br><code>8 sectors × 512 bytes = 4096 bytes (1 bloc)</code>
-        </li>
-      </ul>
+        <h4>Unitats d'organització: Particions, Volums i Blocs</h4>
+        <ul>
+          <li><strong>Partició:</strong> Secció o divisió lògica independent delimitada dins d'una mateixa unitat física de disc.</li>
+          <li><strong>Volum:</strong> Estructura lògica d'un nivell superior que permet flexibilitzar l'espai, podent fusionar particions que pertanyen a diferents discos físics (mitjançant eines com LVM o RAID per programari).</li>
+          <li><strong>Sector (512 bytes):</strong> Unitat física mínima d'emmagatzematge establerta pel fabricant al disc dur.</li>
+          <li><strong>Bloc o Clúster (4096 bytes per defecte):</strong> Unitat mínima d'assignació lògica que empra el sistema de fitxers. Per defecte, un bloc lògic agrupa 8 sectors físics:
+            <br><code>8 sectors × 512 bytes = 4096 bytes (1 bloc)</code>
+          </li>
+        </ul>
 
-      <h3>1.4 Desperdici d'espai i fragmentació</h3>
-      <p>La fragmentació representa la pèrdua de rendiment o el desaprofitament de l'espai d'emmagatzematge:</p>
-      <ul>
-        <li><strong>Fragmentació interna:</strong> Ocorre quan la mida d'un fitxer no omple el bloc assignat sencer (per exemple, un arxiu de 100 bytes en un bloc de 4096 bytes en desaprofita 3996). Es pot minimitzar reduint la mida del bloc en formatejar.</li>
-        <li><strong>Fragmentació externa:</strong> Es produeix quan els arxius es desglossen en fragments dispersos pel disc dur a causa de la manca d'espai contigu. Això alenteix la lectura mecànica i es resol executant eines de desfragmentació per reordenar els blocs.</li>
-      </ul>
+        <h4>Desperdici d'espai i fragmentació</h4>
+        <p>La fragmentació representa la pèrdua de rendiment o el desaprofitament de l'espai d'emmagatzematge:</p>
+        <ul>
+          <li><strong>Fragmentació interna:</strong> Ocorre quan la mida d'un fitxer no omple el bloc assignat sencer (per exemple, un arxiu de 100 bytes en un bloc de 4096 bytes en desaprofita 3996). Es pot minimitzar reduint la mida del bloc en formatejar.</li>
+          <li><strong>Fragmentació externa:</strong> Es produeix quan els arxius es desglossen en fragments dispersos pel disc dur a causa de la manca d'espai contigu. Això alenteix la lectura mecànica i es resol executant eines de desfragmentació per reordenar els blocs.</li>
+        </ul>
 
-      <h3>1.5 Nivells de formateig i sistemes de fitxers</h3>
-      <p>Un <strong>sistema de fitxers</strong> és l'estructura que permet al sistema operatiu gestionar, cercar, llegir i escriure dades sobre una partició. La seva preparació o <strong>formateig</strong> pot ser de tres tipus:</p>
-      <ol>
-        <li><strong>Formateig de baix nivell:</strong> Realitzat a la fàbrica del disc; estableix físicament les pistes i els sectors, esborrant les dades de manera irreversible.</li>
-        <li><strong>Formateig de mig nivell:</strong> Defineix la taula de particions (MBR/GPT) i comprova si hi ha sectors malmesos.</li>
-        <li><strong>Formateig d'alt nivell:</strong> Aplicat pel sistema operatiu per esborrar l'estructura anterior i generar el nou sistema de fitxers. Cal ressaltar que en un formateig d'alt nivell ràpid només s'elimina la taula d'índexs, de manera que la informació roman físicament al disc fins que és sobreescrita per dades noves.</li>
-      </ol>
-
-      <h3>1.6 Pràctica de particionat, formateig i muntatge de discs (/dev/sdb)</h3>
-
-      <h4>Part 1. Particionat amb fdisk</h4>
-      <p>Inspecció inicial de les unitats d'emmagatzematge detectades al sistema:</p>
-      <img src="../img/0.1.png" alt="Execució de fdisk -l per llistar discos">
-
-      <p>Informació detallada del disc dur secundari de 25 GB (/dev/sdb):</p>
-      <img src="../img/0.2.png" alt="Detalls de la unitat /dev/sdb">
-
-      <p>Creació d'una nova partició primària usant l'eina fdisk:</p>
-      <img src="../img/0.3.png" alt="Creació de la partició amb fdisk">
-
-      <p>Verificació de la taula de particions MBR/DOS actualitzada (/dev/sdb1):</p>
-      <img src="../img/0.4.png" alt="Taula de particions amb /dev/sdb1 creada">
-
-      <h4>Part 2. Formateig i muntatge manual</h4>
-      <p>Formateig en ext4 establint una mida de bloc personalitzada de 2048 bytes (2k):</p>
-      <img src="../img/0.5.png" alt="Formateig ext4 amb bloc de 2048 bytes">
-
-      <p>Comprovació de la mida del bloc lògic i superblocs amb tune2fs:</p>
-      <img src="../img/0.6.png" alt="Comprovació de Block size amb tune2fs">
-
-      <p>Creació del directori /mnt/particio1 com a punt de muntatge:</p>
-      <img src="../img/0.7.png" alt="Creació de la carpeta /mnt/particio1">
-
-      <p>Muntatge explícit de la partició ext4:</p>
-      <img src="../img/0.8.png" alt="Muntatge manual amb l'ordre mount">
-
-      <p>Creació de directori i arxiu de prova dins de la partició:</p>
-      <img src="../img/0.9.png" alt="Creació de fitxers de prova a la partició">
-
-      <p>Desmuntatge de seguretat de la partició:</p>
-      <img src="../img/0.10.png" alt="Desmuntatge de la partició amb umount">
-
-      <h4>Part 3. Verificació i muntatge persistent (/etc/fstab)</h4>
-      <p>Comprovació de l'estat del directori abans de muntar:</p>
-      <img src="../img/0.11.png" alt="Comprovació de particio1 desmuntada">
-
-      <p>Muntatge i verificació de la capacitat i sistema de fitxers amb df -hT:</p>
-      <img src="../img/0.12.png" alt="Verificació del muntatge amb df -hT">
-
-      <p>Obtenció de l'identificador únic UUID de la partició amb blkid:</p>
-      <img src="../img/0.13.png" alt="Lectura del UUID amb blkid">
-
-      <p>Edició del fitxer /etc/fstab per establir el muntatge automàtic en l'arrencada:</p>
-      <img src="../img/0.14.png" alt="Configuració de l'arxiu /etc/fstab">
-
-      <p>Verificació final del muntatge persistent i del contingut de la partició:</p>
-      <img src="../img/0.15.png" alt="Comprovació final amb df -hT i ls">
-
-      <h3>1.7 Pràctica de recuperació de fitxers després d'un formateig</h3>
-
-      <h4>Pas 0. Preparació de l'entorn</h4>
-      <p>Instal·lació de l'eina de recuperació <code>testdisk</code> (que inclou <code>photorec</code>):</p>
-      <img src="../img/1.1.png" alt="Instal·lació de testdisk amb sudo apt install">
-
-      <p>Creació i accés a la carpeta de treball <code>~/practica</code>:</p>
-      <img src="../img/1.2.png" alt="Creació de la carpeta de treball practica">
-
-      <p>Creació del fitxer de text de prova <code>notes.txt</code>:</p>
-      <img src="../img/1.3.png" alt="Creació del fitxer notes.txt">
-
-      <p>Verificació del contingut de la carpeta:</p>
-      <img src="../img/1.4.png" alt="Comprovació del fitxer creat amb ls -l">
-
-      <h4>Part 1. Creació del disc virtual</h4>
-      <p>Generació d'un disc virtual de 200 MB omplert amb zeros mitjançant l'ordre <code>dd</code>:</p>
-      <img src="../img/1.5.png" alt="Generació de la imatge de disc virtual disc.img de 200MB">
-
-      <p>Comprovació de la mida i creació del fitxer d'imatge <code>disc.img</code>:</p>
-      <img src="../img/1.6.png" alt="Verificació de disc.img amb ls -lh">
-
-      <h4>Part 2. Formateig del disc i emmagatzematge de dades</h4>
-      <p>Aplicació d'un sistema de fitxers <code>ext4</code> sobre la imatge de disc:</p>
-      <img src="../img/1.7.png" alt="Formateig d'alt nivell ext4 sobre la imatge">
-
-      <p>Creació del punt de muntatge <code>/mnt/prova</code> i muntatge del disc virtual:</p>
-      <img src="../img/1.8.png" alt="Muntatge del disc virtual a /mnt/prova">
-
-      <p>Còpia dels fitxers de prova (imatge, PDF i text) al directori de muntatge:</p>
-      <img src="../img/1.9.png" alt="Còpia dels arxius originals al punt de muntatge">
-
-      <p>Càlcul i desat del hash SHA-256 dels fitxers originals com a empremta digital:</p>
-      <img src="../img/1.10.png" alt="Generació del fitxer originals.sha amb els hashes dels fitxers">
-
-      <h4>Part 2.5 i Part 3. Formateig d'alt nivell</h4>
-      <p>Desmuntatge del disc virtual abans d'aplicar el nou formateig:</p>
-      <img src="../img/1.11.png" alt="Desmuntatge de /mnt/prova amb sudo umount">
-
-      <p>Formateig d'alt nivell conservant les dades al disc (opció <code>-E nodiscard</code>):</p>
-      <img src="../img/1.12.png" alt="Formateig d'alt nivell ext4 amb l'opció nodiscard">
-
-      <p>Comprovació del disc aparentment buit (només conté la carpeta <code>lost+found</code>):</p>
-      <img src="../img/1.13.png" alt="Comprovació del contingut del disc després del formateig">
-
-      <p>Segon desmuntatge del disc virtual per iniciar la fase de recuperació:</p>
-      <img src="../img/1.14.png" alt="Desmuntatge del disc virtual">
-
-      <h4>Part 4. Recuperació de fitxers amb PhotoRec</h4>
-      <p>Execució de l'eina <code>photorec</code> per escanear l'estructura de la imatge de disc:</p>
-      <img src="../img/1.15.png" alt="Execució de l'ordre photorec">
-
-      <p>Llistat dels fitxers recuperats a la carpeta <code>recup.1</code>:</p>
-      <img src="../img/1.16.png" alt="Fitxers recuperats per PhotoRec">
-
-      <p>Comprovació i comparació dels valors hash SHA-256 entre els fitxers originals i els recuperats:</p>
-      <img src="../img/1.17.png" alt="Verificació dels valors hash SHA-256">
-
-      <p>Recuperació del text contingut al fitxer unstructurat <code>notes.txt</code> mitjançant l'extracció de cadenes amb <code>strings</code> i <code>grep</code>:</p>
-      <img src="../img/1.18.png" alt="Recuperació del text pla amb l'ordre strings">
-
-      <h4>Part 5. Esborrat de baix nivell, comprovació final i neteja</h4>
-      <p>Sobreescriptura completa de la imatge de disc amb zeros fent servir <code>dd</code> (formateig de baix nivell):</p>
-      <img src="../img/1.19.png" alt="Esborrat de baix nivell omplint el disc amb zeros usant dd">
-
-      <p>Verificació que <code>photorec</code> ja no troba cap fitxer recuperable després de l'esborrat físic:</p>
-      <img src="../img/1.20.png" alt="Verificació final de photorec sense fitxers trobats">
-
-      <p>Comprovació que la cerca amb <code>strings</code> i <code>grep</code> tampoc no retorna cap resultat:</p>
-      <img src="../img/1.21.png" alt="Cerca de cadena amb strings sense cap resultat">
-
-      <p>Neteja dels fitxers temporals, discs virtuals i carpetes de recuperació creades durant la pràctica:</p>
-      <img src="../img/1.22.png" alt="Eliminació de fitxers temporals amb rm -rf">
-
-      <h4>Qüestionari de la pràctica de recuperació</h4>
-      <div class="qüestionari">
+        <h4>Nivells de formateig i sistemes de fitxers</h4>
+        <p>Un <strong>sistema de fitxers</strong> és l'estructura que permet al sistema operatiu gestionar, cercar, llegir i escriure dades sobre una partició. La seva preparació o <strong>formateig</strong> pot ser de tres tipus:</p>
         <ol>
-          <li>
-            <strong>Després de la part 3, el disc semblava buit. On eren realment els teus fitxers?</strong>
-            <p>El disc semblava buit però no ho estava, ja que el que hem fet ha sigut eliminar l'estructura del sistema de fitxers, però les dades dels fitxers encara romanien físicament al disc.</p>
-          </li>
-          <li>
-            <strong>Per què els fitxers recuperats tenen noms diferents dels originals?</strong>
-            <p>Perquè el nom de l'arxiu es guarda a la taula d'índexs del sistema de fitxers. En esborrar-la, <code>photorec</code> no pot conèixer el nom original i assigna a cada fitxer un número segons la posició del disc on l'ha trobat.</p>
-          </li>
-          <li>
-            <strong>Com pots demostrar que la foto recuperada és exactament la mateixa que l'original?</strong>
-            <p>Comparant el valor de la seua empremta digital o hash SHA-256 (generat prèviament amb <code>sha256sum</code>), comprovant que coincideix byte a byte amb l'original.</p>
-          </li>
-          <li>
-            <strong>Per què <code>photorec</code> ha trobat la foto i el PDF, però no el <code>notes.txt</code>? Com l'has trobat igualment?</strong>
-            <p>Perquè els fitxers de text pla (<code>.txt</code>) no tenen una capçalera o signatura fixa com les imatges o els PDF. L'hem trobat directament buscant la seua informació al disc amb l'ordre <code>strings</code>, ja que es troba escrita en text pla.</p>
-          </li>
-          <li>
-            <strong>Quin nivell de formateig has fet a la part 3 i quin a la part 5?</strong>
-            <p>A la part 3 s'ha realitzat un formateig d'alt nivell (reconstrucció del sistema de fitxers sense esborrar dades) i a la part 5 un formateig de baix nivell (sobreescriptura completa del disc amb zeros).</p>
-          </li>
-          <li>
-            <strong>Vols vendre un USB on tenies fotos personals. Quin formateig faries abans de vendre'l i per què?</strong>
-            <p>Faria un formateig de baix nivell per assegurar-me que es sobreescriuen totes les dades amb zeros i així evitar que ningú puga recuperar les meues fotos privades amb eines d'auditoria.</p>
-          </li>
+          <li><strong>Formateig de baix nivell:</strong> Realitzat a la fàbrica del disc; estableix físicament les pistes i els sectors, esborrant les dades de manera irreversible.</li>
+          <li><strong>Formateig de mig nivell:</strong> Defineix la taula de particions (MBR/GPT) i comprova si hi ha sectors malmesos.</li>
+          <li><strong>Formateig d'alt nivell:</strong> Aplicat pel sistema operatiu per esborrar l'estructura anterior i generar el nou sistema de fitxers. Cal ressaltar que en un formateig d'alt nivell ràpid només s'elimina la taula d'índexs, de manera que la informació roman físicament al disc fins que és sobreescrita per dades noves.</li>
         </ol>
+      </div>
+
+      <div id="apartat1-2">
+        <h3>1.2 Pràctica 1: recuperació de fitxers</h3>
+
+        <h4>Pas 0. Preparació de l'entorn</h4>
+        <p>Instal·lació de l'eina de recuperació <code>testdisk</code> (que inclou <code>photorec</code>):</p>
+        <img src="../img/1.1.png" alt="Instal·lació de testdisk amb sudo apt install">
+
+        <p>Creació i accés a la carpeta de treball <code>~/practica</code>:</p>
+        <img src="../img/1.2.png" alt="Creació de la carpeta de treball practica">
+
+        <p>Creació del fitxer de text de prova <code>notes.txt</code>:</p>
+        <img src="../img/1.3.png" alt="Creació del fitxer notes.txt">
+
+        <p>Verificació del contingut de la carpeta:</p>
+        <img src="../img/1.4.png" alt="Comprovació del fitxer creat amb ls -l">
+
+        <h4>Part 1. Creació del disc virtual</h4>
+        <p>Generació d'un disc virtual de 200 MB omplert amb zeros mitjançant l'ordre <code>dd</code>:</p>
+        <img src="../img/1.5.png" alt="Generació de la imatge de disc virtual disc.img de 200MB">
+
+        <p>Comprovació de la mida i creació del fitxer d'imatge <code>disc.img</code>:</p>
+        <img src="../img/1.6.png" alt="Verificació de disc.img amb ls -lh">
+
+        <h4>Part 2. Formateig del disc i emmagatzematge de dades</h4>
+        <p>Aplicació d'un sistema de fitxers <code>ext4</code> sobre la imatge de disc:</p>
+        <img src="../img/1.7.png" alt="Formateig d'alt nivell ext4 sobre la imatge">
+
+        <p>Creació del punt de muntatge <code>/mnt/prova</code> i muntatge del disc virtual:</p>
+        <img src="../img/1.8.png" alt="Muntatge del disc virtual a /mnt/prova">
+
+        <p>Còpia dels fitxers de prova (imatge, PDF i text) al directori de muntatge:</p>
+        <img src="../img/1.9.png" alt="Còpia dels arxius originals al punt de muntatge">
+
+        <p>Càlcul i desat del hash SHA-256 dels fitxers originals com a empremta digital:</p>
+        <img src="../img/1.10.png" alt="Generació del fitxer originals.sha amb els hashes dels fitxers">
+
+        <h4>Part 2.5 i Part 3. Formateig d'alt nivell</h4>
+        <p>Desmuntatge del disc virtual abans d'aplicar el nou formateig:</p>
+        <img src="../img/1.11.png" alt="Desmuntatge de /mnt/prova amb sudo umount">
+
+        <p>Formateig d'alt nivell conservant les dades al disc (opció <code>-E nodiscard</code>):</p>
+        <img src="../img/1.12.png" alt="Formateig d'alt nivell ext4 amb l'opció nodiscard">
+
+        <p>Comprovació del disc aparentment buit (només conté la carpeta <code>lost+found</code>):</p>
+        <img src="../img/1.13.png" alt="Comprovació del contingut del disc després del formateig">
+
+        <p>Segon desmuntatge del disc virtual per iniciar la fase de recuperació:</p>
+        <img src="../img/1.14.png" alt="Desmuntatge del disc virtual">
+
+        <h4>Part 4. Recuperació de fitxers amb PhotoRec</h4>
+        <p>Execució de l'eina <code>photorec</code> per escanear l'estructura de la imatge de disc:</p>
+        <img src="../img/1.15.png" alt="Execució de l'ordre photorec">
+
+        <p>Llistat dels fitxers recuperats a la carpeta <code>recup.1</code>:</p>
+        <img src="../img/1.16.png" alt="Fitxers recuperats per PhotoRec">
+
+        <p>Comprovació i comparació dels valors hash SHA-256 entre els fitxers originals i els recuperats:</p>
+        <img src="../img/1.17.png" alt="Verificació dels valors hash SHA-256">
+
+        <p>Recuperació del text contingut al fitxer unstructurat <code>notes.txt</code> mitjançant l'extracció de cadenes amb <code>strings</code> i <code>grep</code>:</p>
+        <img src="../img/1.18.png" alt="Recuperació del text pla amb l'ordre strings">
+
+        <h4>Part 5. Esborrat de baix nivell, comprovació final i neteja</h4>
+        <p>Sobreescriptura completa de la imatge de disc amb zeros fent servir <code>dd</code> (formateig de baix nivell):</p>
+        <img src="../img/1.19.png" alt="Esborrat de baix nivell omplint el disc amb zeros usant dd">
+
+        <p>Verificació que <code>photorec</code> ja no troba cap fitxer recuperable després de l'esborrat físic:</p>
+        <img src="../img/1.20.png" alt="Verificació final de photorec sense fitxers trobats">
+
+        <p>Comprovació que la cerca amb <code>strings</code> i <code>grep</code> tampoc no retorna cap resultat:</p>
+        <img src="../img/1.21.png" alt="Cerca de cadena amb strings sense cap resultat">
+
+        <p>Neteja dels fitxers temporals, discs virtuals i carpetes de recuperació creades durant la pràctica:</p>
+        <img src="../img/1.22.png" alt="Eliminació de fitxers temporals amb rm -rf">
+
+        <h4>Qüestionari de la pràctica de recuperació</h4>
+        <div class="qüestionari">
+          <ol>
+            <li>
+              <strong>Després de la part 3, el disc semblava buit. On eren realment els teus fitxers?</strong>
+              <p>El disc semblava buit però no ho estava, ja que el que hem fet ha sigut eliminar l'estructura del sistema de fitxers, però les dades dels fitxers encara romanien físicament al disc.</p>
+            </li>
+            <li>
+              <strong>Per què els fitxers recuperats tenen noms diferents dels originals?</strong>
+              <p>Perquè el nom de l'arxiu es guarda a la taula d'índexs del sistema de fitxers. En esborrar-la, <code>photorec</code> no pot conèixer el nom original i assigna a cada fitxer un número segons la posició del disc on l'ha trobat.</p>
+            </li>
+            <li>
+              <strong>Com pots demostrar que la foto recuperada és exactament la mateixa que l'original?</strong>
+              <p>Comparant el valor de la seua empremta digital o hash SHA-256 (generat prèviament amb <code>sha256sum</code>), comprovant que coincideix byte a byte amb l'original.</p>
+            </li>
+            <li>
+              <strong>Per què <code>photorec</code> ha trobat la foto i el PDF, però no el <code>notes.txt</code>? Com l'has trobat igualment?</strong>
+              <p>Perquè els fitxers de text pla (<code>.txt</code>) no tenen una capçalera o signatura fixa com les imatges o els PDF. L'hem trobat directament buscant la seua informació al disc amb l'ordre <code>strings</code>, ja que es troba escrita en text pla.</p>
+            </li>
+            <li>
+              <strong>Quin nivell de formateig has fet a la part 3 i quin a la part 5?</strong>
+              <p>A la part 3 s'ha realitzat un formateig d'alt nivell (reconstrucció del sistema de fitxers sense esborrar dades) i a la part 5 un formateig de baix nivell (sobreescriptura completa del disc amb zeros).</p>
+            </li>
+            <li>
+              <strong>Vols vendre un USB on tenies fotos personals. Quin formateig faries abans de vendre'l i per què?</strong>
+              <p>Faria un formateig de baix nivell per assegurar-me que es sobreescriuen totes les dades amb zeros i així evitar que ningú puga recuperar les meues fotos privades amb eines d'auditoria.</p>
+            </li>
+          </ol>
+        </div>
+      </div>
+
+      <div id="apartat1-3">
+        <h3>1.3 Pràctica 2: particions i muntatge (/dev/sdb)</h3>
+
+        <h4>Part 1. Particionat amb fdisk</h4>
+        <p>Inspecció inicial de les unitats d'emmagatzematge detectades al sistema:</p>
+        <img src="../img/0.1.png" alt="Execució de fdisk -l per llistar discos">
+
+        <p>Informació detallada del disc dur secundari de 25 GB (/dev/sdb):</p>
+        <img src="../img/0.2.png" alt="Detalls de la unitat /dev/sdb">
+
+        <p>Creació d'una nova partició primària usant l'eina fdisk:</p>
+        <img src="../img/0.3.png" alt="Creació de la partició amb fdisk">
+
+        <p>Verificació de la taula de particions MBR/DOS actualitzada (/dev/sdb1):</p>
+        <img src="../img/0.4.png" alt="Taula de particions amb /dev/sdb1 creada">
+
+        <h4>Part 2. Formateig i muntatge manual</h4>
+        <p>Formateig en ext4 establint una mida de bloc personalitzada de 2048 bytes (2k):</p>
+        <img src="../img/0.5.png" alt="Formateig ext4 amb bloc de 2048 bytes">
+
+        <p>Comprovació de la mida del bloc lògic i superblocs amb tune2fs:</p>
+        <img src="../img/0.6.png" alt="Comprovació de Block size amb tune2fs">
+
+        <p>Creació del directori /mnt/particio1 com a punt de muntatge:</p>
+        <img src="../img/0.7.png" alt="Creació de la carpeta /mnt/particio1">
+
+        <p>Muntatge explícit de la partició ext4:</p>
+        <img src="../img/0.8.png" alt="Muntatge manual amb l'ordre mount">
+
+        <p>Creació de directori i arxiu de prova dins de la partició:</p>
+        <img src="../img/0.9.png" alt="Creació de fitxers de prova a la partició">
+
+        <p>Desmuntatge de seguretat de la partició:</p>
+        <img src="../img/0.10.png" alt="Desmuntatge de la partició amb umount">
+
+        <h4>Part 3. Verificació i muntatge persistent (/etc/fstab)</h4>
+        <p>Comprovació de l'estat del directori abans de muntar:</p>
+        <img src="../img/0.11.png" alt="Comprovació de particio1 desmuntada">
+
+        <p>Muntatge i verificació de la capacitat i sistema de fitxers amb df -hT:</p>
+        <img src="../img/0.12.png" alt="Verificació del muntatge amb df -hT">
+
+        <p>Obtenció de l'identificador únic UUID de la partició amb blkid:</p>
+        <img src="../img/0.13.png" alt="Lectura del UUID amb blkid">
+
+        <p>Edició del fitxer /etc/fstab per establir el muntatge automàtic en l'arrencada:</p>
+        <img src="../img/0.14.png" alt="Configuració de l'arxiu /etc/fstab">
+
+        <p>Verificació final del muntatge persistent i del contingut de la partició:</p>
+        <img src="../img/0.15.png" alt="Comprovació final amb df -hT i ls">
       </div>
 
       <p class="tornar-index"><a href="#index-apartats">↑ Tornar a l'índex</a></p>
     </article>
 
+    <!-- APARTAT 2 -->
     <article class="apartat" id="apartat2">
       <h2>2. Gestió d'usuaris i grups</h2>
       <p>Administració de comptes d'usuari, permisos i grups de treball en el servidor d'Ubuntu Linux corresponent al cas pràctic de <strong>PixelForge</strong>.</p>
@@ -344,6 +356,7 @@
       <p class="tornar-index"><a href="#index-apartats">↑ Tornar a l'índex</a></p>
     </article>
 
+    <!-- APARTAT 3 -->
     <article class="apartat" id="apartat3">
       <h2>3. Gestió de processos del sistema</h2>
       <p>Control, diagnòstic, prioritats i gestió de senyals sobre els processos en executació.</p>
@@ -398,6 +411,7 @@
       <p class="tornar-index"><a href="#index-apartats">↑ Tornar a l'índex</a></p>
     </article>
 
+    <!-- APARTAT 4 -->
     <article class="apartat" id="apartat4">
       <h2>4. Còpies de seguretat i automatització (Escape room · L'arxiu perdut)</h2>
       <p>Pràctica de còpies de seguretat manuals, incrementals, imatges de disc i automatització amb <code>cp</code>, <code>rsync</code>, <code>dd</code>, Déjà Dup, <code>cron</code> i <code>anacron</code>.</p>
@@ -445,109 +459,82 @@
       <p class="tornar-index"><a href="#index-apartats">↑ Tornar a l'índex</a></p>
     </article>
 
+    <!-- APARTAT 5 -->
     <article class="apartat" id="apartat5">
       <h2>5. Gestió de permisos (Missió «PixelForge», 3a part)</h2>
       <p>Configuració de permisos estàndard, propietat, permisos especials (SGID, Sticky bit, SUID), llistes de control d'accés (ACL) i màscara <code>umask</code> a l'entorn de treball <code>/srv/pixelforge</code>.</p>
 
-      <div class="subindex-exercicis" id="index-apartat5">
-        <h4>Índex d'exercicis i reptes de gestió de permisos</h4>
-        <table class="taula-apartats">
-          <thead>
-            <tr><th>Nivell / Exercici</th><th>Descripció</th><th>Repte associat</th></tr>
-          </thead>
-          <tbody>
-            <tr><td><a href="#nivell5-0">Nivell 0 · Muntar l'estudi</a></td><td>Creació de l'estructura de carpetes a <code>/srv/pixelforge</code></td><td>—</td></tr>
-            <tr><td><a href="#nivell5-1">Nivell 1 · Llegir els permisos</a></td><td>Inspecció amb <code>ls -l</code>, <code>ls -ld</code> i <code>stat</code></td><td><a href="#repte5-1">Repte 1 · /etc/shadow i /root</a></td></tr>
-            <tr><td><a href="#nivell5-2">Nivell 2 · chmod numèric</a></td><td>Assignació de permisos 750, 755 i 640</td><td><a href="#repte5-2">Repte 2 · Permisos de compartit (775)</a></td></tr>
-            <tr><td><a href="#nivell5-3">Nivell 3 · chmod simbòlic</a></td><td>Modificació amb <code>u-w</code>, <code>u+w</code> i <code>o=</code></td><td><a href="#repte5-3">Repte 3 · informe.txt en una ordre</a></td></tr>
-            <tr><td><a href="#nivell5-4">Nivell 4 · chown i chgrp</a></td><td>Assignació de carpetes a equips i comprovació amb <code>pau</code></td><td>—</td></tr>
-            <tr><td><a href="#nivell5-5">Nivell 5 · SGID d'equip</a></td><td>Herència de grup en carpetes amb <code>g+s</code></td><td><a href="#repte5-5">Repte 5 · SGID a proves amb marc</a></td></tr>
-            <tr><td><a href="#nivell5-6">Nivell 6 · Sticky bit</a></td><td>Protecció contra esborrat aliè a <code>compartit</code> (<code>+t</code>)</td><td><a href="#repte5-6">Repte 6 · Esborrat propi amb sticky bit</a></td></tr>
-            <tr><td><a href="#nivell5-7">Nivell 7 · ACL i convidat</a></td><td>Accés puntual amb <code>setfacl</code> per a <code>marc</code></td><td><a href="#repte5-7">Repte 7 · ACL per defecte a artistes</a></td></tr>
-            <tr><td><a href="#nivell5-8">Nivell 8 · umask i SUID</a></td><td>Màscara <code>027</code> i anàlisi de binaris SUID</td><td><a href="#repte5-8">Repte 8 · Anàlisi de umask 137</a></td></tr>
-          </tbody>
-        </table>
-      </div>
-
-      <h3 id="nivell5-0">Nivell 0 · Muntar l'estudi</h3>
+      <h3>Nivell 0 · Muntar l'estudi</h3>
       <p>Creació de la carpeta arrel <code>/srv/pixelforge</code> amb les subcarpetes d'equip (<code>art</code>, <code>codi</code>, <code>compartit</code> i <code>proves</code>) i comprovació inicial dels propietaris:</p>
       <img src="../img/5.1.png" alt="Llistat de carpetes creades a /srv/pixelforge">
-      <p class="tornar-index"><a href="#index-apartat5">↑ Tornar a l'índex de permisos</a></p>
 
-      <h3 id="nivell5-1">Nivell 1 · Llegir els permisos</h3>
+      <h3>Nivell 1 · Llegir els permisos</h3>
       <p>Inspecció detallada dels permisos del fitxer <code>joc.py</code> (<code>-rw-r--r--</code> / <code>0644</code>) i de la carpeta <code>codi</code> (<code>drwxr-xr-x</code>) mitjançant <code>ls -l</code>, <code>ls -ld</code> i <code>stat</code>:</p>
       <img src="../img/5.2.png" alt="Inspecció de permisos amb ls -l, ls -ld i stat">
 
-      <h4 id="repte5-1">Repte 1 · Permisos de /etc/shadow i /root</h4>
+      <h4>Repte 1 · Permisos de /etc/shadow i /root</h4>
       <p>Comprovació dels permisos de <code>/etc/shadow</code> (<code>-rw-r----- root shadow</code>, només el pot llegir <code>root</code> i els membres del grup <code>shadow</code>) i de <code>/root</code> (<code>drwx------ root root</code>, accessible únicament pel superusuari <code>root</code>):</p>
       <img src="../img/5.2.1.png" alt="Comprovació de permisos de /etc/shadow i /root">
-      <p class="tornar-index"><a href="#index-apartat5">↑ Tornar a l'índex de permisos</a></p>
 
-      <h3 id="nivell5-2">Nivell 2 · chmod numèric</h3>
+      <h3>Nivell 2 · chmod numèric</h3>
       <p>Aplicació de permisos numèrics: <code>750</code> (<code>drwxr-x---</code>) a <code>codi</code>, <code>755</code> a <code>art</code> i <code>640</code> (<code>-rw-r-----</code>) al fitxer <code>informe.txt</code> dins de <code>proves</code>:</p>
       <img src="../img/5.3.png" alt="Aplicació i verificació de permisos numèrics amb chmod">
 
-      <h4 id="repte5-2">Repte 2 · Permisos per a la carpeta compartit</h4>
+      <h4>Repte 2 · Permisos per a la carpeta compartit</h4>
       <p>Càlcul i aplicació del permís <code>775</code> (<code>drwxrwxr-x</code>) perquè el propietari tingui tots els permisos, el grup pugui entrar i crear fitxers, i la resta només entrar i llegir:</p>
       <img src="../img/5.3.1.png" alt="Assignació de permisos 775 a /srv/pixelforge/compartit">
-      <p class="tornar-index"><a href="#index-apartat5">↑ Tornar a l'índex de permisos</a></p>
 
-      <h3 id="nivell5-3">Nivell 3 · chmod simbòlic</h3>
+      <h3>Nivell 3 · chmod simbòlic</h3>
       <p>Modificació simbòlica sobre la carpeta <code>art</code> retirant l'escriptura al propietari (<code>u-w</code>), restaurant-la (<code>u+w</code>) i eliminant els permisos a la resta d'usuaris (<code>o=</code>):</p>
       <img src="../img/5.4.png" alt="Modificació simbòlica de permisos amb chmod u-w i o=">
 
-      <h4 id="repte5-3">Repte 3 · Canvi simbòlic en una sola ordre</h4>
+      <h4>Repte 3 · Canvi simbòlic en una sola ordre</h4>
       <p>Configuració de <code>informe.txt</code> amb <code>sudo chmod u=rw,g=r,o=</code>, comprovant que resulta en <code>-rw-r-----</code> (equivalent a <code>640</code>):</p>
       <img src="../img/5.4.1.png" alt="Canvi simbòlic complet sobre informe.txt">
-      <p class="tornar-index"><a href="#index-apartat5">↑ Tornar a l'índex de permisos</a></p>
 
-      <h3 id="nivell5-4">Nivell 4 · chown i chgrp</h3>
+      <h3>Nivell 4 · chown i chgrp</h3>
       <p>Assignació de la carpeta <code>codi</code> a l'usuari <code>pau</code> i al grup <code>programadors</code>:</p>
       <img src="../img/5.5.png" alt="Assignació de propietari i grup a /srv/pixelforge/codi">
 
       <p>Comprovació iniciant sessió amb <code>pau</code>: pot crear <code>nivell1.py</code> dins de <code>codi</code>, però rep <code>Permission denied</code> en intentar escriure a <code>proves</code>:</p>
       <img src="../img/5.5.1.png" alt="Prova d'escriptura de pau a codi i denegació a proves">
-      <p class="tornar-index"><a href="#index-apartat5">↑ Tornar a l'índex de permisos</a></p>
 
-      <h3 id="nivell5-5">Nivell 5 · SGID d'equip</h3>
+      <h3>Nivell 5 · SGID d'equip</h3>
       <p>Comprovació inicial abans de l'SGID: en crear <code>mapa.py</code> com a <code>nvidal</code>, el fitxer s'assigna al seu grup personal <code>nvidal</code> en lloc de <code>programadors</code>:</p>
       <img src="../img/5.6.png" alt="Creació de mapa.py sense SGID heretant el grup personal nvidal">
 
       <p>Activació del bit SGID (<code>drwxrws---</code>) a <code>codi</code> i verificació que el nou fitxer <code>so.py</code> hereta automàticament el grup <code>programadors</code>:</p>
       <img src="../img/5.6.1.png" alt="Activació d'SGID a codi i herència de grup a so.py">
 
-      <h4 id="repte5-5">Repte 5 · SGID a la carpeta proves</h4>
+      <h4>Repte 5 · SGID a la carpeta proves</h4>
       <p>Assignació d'escriptura i bit SGID a <code>proves</code> (<code>sudo chmod g+ws</code>) i comprovació amb <code>marc</code> que el nou fitxer <code>test_marc.txt</code> pertany al grup <code>testers</code>:</p>
       <img src="../img/5.6.2.png" alt="Activació d'SGID a proves i comprovació amb marc">
-      <p class="tornar-index"><a href="#index-apartat5">↑ Tornar a l'índex de permisos</a></p>
 
-      <h3 id="nivell5-6">Nivell 6 · Sticky bit</h3>
+      <h3>Nivell 6 · Sticky bit</h3>
       <p>Activació del sticky bit (<code>drwxrwxrwt</code>) a <code>compartit</code> i comprovació de l'error <code>L'operació no és permesa</code> quan <code>marc</code> intenta esborrar el fitxer <code>de_pau.txt</code>:</p>
       <img src="../img/5.7.png" alt="Sticky bit actiu a compartit i bloqueig d'esborrat aliè">
 
-      <h4 id="repte5-6">Repte 6 · Esborrat de fitxers propis amb sticky bit</h4>
+      <h4>Repte 6 · Esborrat de fitxers propis amb sticky bit</h4>
       <p>Demostració que, amb el sticky bit posat, <code>marc</code> sí que pot crear i eliminar el seu propi fitxer <code>de_marc.txt</code> sense poder tocar els dels altres:</p>
       <img src="../img/5.7.1.png" alt="Creació i esborrat del fitxer propi de_marc.txt amb sticky bit">
-      <p class="tornar-index"><a href="#index-apartat5">↑ Tornar a l'índex de permisos</a></p>
 
-      <h3 id="nivell5-7">Nivell 7 · ACL i convidat</h3>
+      <h3>Nivell 7 · ACL i convidat</h3>
       <p>Concessió puntual d'accés de lectura i execució (<code>r-x</code>) a <code>marc</code> sobre <code>codi</code> mitjançant <code>setfacl -m</code>, comprovació d'accés i retirada posterior de l'ACL amb <code>setfacl -x</code>:</p>
       <img src="../img/5.8.png" alt="Gestió d'ACL puntual per a marc amb setfacl i getfacl">
 
-      <h4 id="repte5-7">Repte 7 · ACL per defecte per al grup artistes</h4>
+      <h4>Repte 7 · ACL per defecte per al grup artistes</h4>
       <p>Configuració d'una ACL per defecte a <code>compartit</code> (<code>sudo setfacl -d -m g:artistes:rwx</code>) i verificació de les regles <code>default:</code> amb <code>getfacl</code>:</p>
       <img src="../img/5.8.1.png" alt="ACL per defecte per al grup artistes a compartit">
-      <p class="tornar-index"><a href="#index-apartat5">↑ Tornar a l'índex de permisos</a></p>
 
-      <h3 id="nivell5-8">Nivell 8 · umask i SUID</h3>
+      <h3>Nivell 8 · umask i SUID</h3>
       <p>Configuració de <code>umask 027</code> (generant fitxers <code>640</code> i carpetes <code>750</code>), inspecció del bit SUID a <code>/usr/bin/passwd</code> (<code>-rwsr-xr-x</code>) i cerca de binaris SUID al sistema:</p>
       <img src="../img/5.9.png" alt="Comprovació de umask 027 i binaris amb bit SUID">
 
-      <h4 id="repte5-8">Repte 8 · Anàlisi de la màscara 137</h4>
+      <h4>Repte 8 · Anàlisi de la màscara 137</h4>
       <p>Prova pràctica de <code>umask 137</code>: tant el fitxer (<code>-rw-r-----</code>, <code>640</code>) com la carpeta (<code>drw-r-----</code>, <code>640</code>) es creen sense permís d'execució <code>x</code>, fet que impedeix accedir dins de <code>carpeta_137</code> amb <code>cd</code> (<code>S'ha denegat el permís</code>):</p>
       <img src="../img/5.9.1.png" alt="Prova de umask 137 i error d'accés a carpeta_137">
 
-      <p class="tornar-index"><a href="#index-apartats">↑ Tornar a l'índex principal</a></p>
+      <p class="tornar-index"><a href="#index-apartats">↑ Tornar a l'índex</a></p>
     </article>
   </section>
 </main>
