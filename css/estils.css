@@ -17,6 +17,10 @@
 
 * { box-sizing: border-box; }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   margin: 0;
   font-family: "Segoe UI", Roboto, Arial, sans-serif;
@@ -57,8 +61,13 @@ a:hover { text-decoration: underline; }
   border-radius: 999px;
   font-size: 0.85rem;
   text-decoration: none;
+  transition: background 0.2s ease, transform 0.2s ease;
 }
-.hero-nav a:hover { background: rgba(255, 255, 255, 0.24); text-decoration: none; }
+.hero-nav a:hover {
+  background: rgba(255, 255, 255, 0.24);
+  transform: translateY(-1px);
+  text-decoration: none;
+}
 
 .hero-titol {
   text-align: center;
@@ -127,8 +136,12 @@ main { padding-bottom: 50px; }
   font-weight: 600;
   text-decoration: none !important;
   margin-top: 8px;
+  transition: background 0.2s ease, transform 0.2s ease;
 }
-.boto:hover { background: var(--mari); }
+.boto:hover {
+  background: var(--mari);
+  transform: translateY(-2px);
+}
 
 /* ---------- Graella de targetes (sprints / apartats) ---------- */
 .rejilla-targetes {
@@ -144,7 +157,7 @@ main { padding-bottom: 50px; }
   border: 1px solid var(--vora);
   border-radius: var(--radi);
   padding: 18px 20px;
-  transition: box-shadow 0.15s, transform 0.15s;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
 }
 .targeta:hover {
   box-shadow: 0 4px 14px rgba(12, 110, 115, 0.18);
@@ -191,26 +204,90 @@ h1, h2 { color: var(--mari); }
   color: var(--tinta-suau);
 }
 .taula-apartats td:first-child, .taula-apartats th:first-child { width: 46px; color: var(--tinta-suau); }
+.taula-apartats tr {
+  transition: background-color 0.2s ease;
+}
 .taula-apartats tr:hover td { background: var(--fons); }
-.taula-apartats a { font-weight: 600; }
+.taula-apartats a {
+  font-weight: 600;
+  display: inline-block;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+.taula-apartats a:hover {
+  transform: translateX(5px);
+}
 
-/* ---------- Contingut d'un apartat, dins de la mateixa pàgina ---------- */
+/* ---------- Contingut d'un apartat i animacions ---------- */
+@keyframes apareixerSuau {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes ressaltatDesti {
+  0% { background-color: rgba(12, 110, 115, 0.12); border-radius: var(--radi); }
+  100% { background-color: transparent; }
+}
+
+.apartat,
+#apartat1-1,
+#apartat1-2,
+#apartat1-3 {
+  scroll-margin-top: 24px;
+}
+
 .apartat {
-  scroll-margin-top: 20px;
   padding-top: 26px;
   margin-top: 26px;
   border-top: 1px solid var(--vora);
+  animation: apareixerSuau 0.65s ease-out both;
 }
+
+/* Animació progressiva en fer scroll cap avall */
+@supports (animation-timeline: view()) {
+  .apartat {
+    animation: apareixerSuau linear both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 18%;
+  }
+}
+
+/* Ressaltat breu en clicar un enllaç de l'índex */
+.apartat:target,
+#apartat1-1:target,
+#apartat1-2:target,
+#apartat1-3:target {
+  animation: ressaltatDesti 1.3s ease-out;
+}
+
 .apartat h2 { margin-top: 0; }
 .apartat img {
   max-width: 100%;
   border-radius: var(--radi);
   border: 1px solid var(--vora);
   margin: 14px 0;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.apartat img:hover {
+  transform: scale(1.01);
+  box-shadow: 0 6px 18px rgba(18, 37, 66, 0.12);
 }
 .apartat ul { padding-left: 22px; }
 .apartat li { margin: 4px 0; }
+
 .tornar-index { font-size: 0.85rem; }
+.tornar-index a {
+  display: inline-block;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+.tornar-index a:hover {
+  transform: translateY(-2px);
+}
 
 /* ---------- Peu de pàgina: llicència i autoria (fix a totes les pàgines) ---------- */
 footer.peu {
