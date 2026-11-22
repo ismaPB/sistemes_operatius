@@ -34,10 +34,11 @@
         <tr><td style="padding-left: 1.5rem;">1.1</td><td><a href="#apartat1-1">Teoria</a></td></tr>
         <tr><td style="padding-left: 1.5rem;">1.2</td><td><a href="#apartat1-2">Pràctica 1: recuperació de fitxers</a></td></tr>
         <tr><td style="padding-left: 1.5rem;">1.3</td><td><a href="#apartat1-3">Pràctica 2: particions i muntatge</a></td></tr>
-        <tr><td>2</td><td><a href="#apartat2">Gestió d'usuaris i grups</a></td></tr>
-        <tr><td>3</td><td><a href="#apartat3">Gestió de processos del sistema</a></td></tr>
-        <tr><td>4</td><td><a href="#apartat4">Còpies de seguretat i automatització (Escape room · L'arxiu perdut)</a></td></tr>
-        <tr><td>5</td><td><a href="#apartat5">Gestió de permisos (Missió «PixelForge», 3a part)</a></td></tr>
+        <tr><td>2</td><td><a href="#apartat2">Gestió d'usuaris i grups (1a part PixelForge)</a></td></tr>
+        <tr><td>3</td><td><a href="#apartat3">Entorn d'usuari i valors per defecte (2a part PixelForge)</a></td></tr>
+        <tr><td>4</td><td><a href="#apartat4">Gestió de permisos (3a part PixelForge)</a></td></tr>
+        <tr><td>5</td><td><a href="#apartat5">Gestió de processos del sistema</a></td></tr>
+        <tr><td>6</td><td><a href="#apartat6">Còpies de seguretat i automatització (Escape room · L'arxiu perdut)</a></td></tr>
       </tbody>
     </table>
 
@@ -278,8 +279,8 @@
 
     <!-- APARTAT 2 -->
     <article class="apartat" id="apartat2">
-      <h2>2. Gestió d'usuaris i grups</h2>
-      <p>Administració de comptes d'usuari, permisos i grups de treball en el servidor d'Ubuntu Linux corresponent al cas pràctic de <strong>PixelForge</strong>.</p>
+      <h2>2. Gestió d'usuaris i grups (1a part PixelForge)</h2>
+      <p>Administració de comptes d'usuari, permisos i grups de treball en el servidor d'Ubuntu Linux corresponent a la 1a part del cas pràctic de <strong>PixelForge</strong>.</p>
       
       <h3>Nivell 0: Conèixer el sistema</h3>
       <p>Exploració inicial dels identificadors (UID/GID), permisos sobre <code>/etc/shadow</code> i comprovació del grup <code>sudo</code> per a l'usuari personal:</p>
@@ -358,110 +359,108 @@
 
     <!-- APARTAT 3 -->
     <article class="apartat" id="apartat3">
-      <h2>3. Gestió de processos del sistema</h2>
-      <p>Control, diagnòstic, prioritats i gestió de senyals sobre els processos en executació.</p>
+      <h2>3. Entorn d'usuari i valors per defecte (2a part PixelForge)</h2>
+      <p>Personalització de l'entorn de shell (<code>.bashrc</code>, <code>.profile</code>, <code>.bash_logout</code>), preparació de la plantilla <code>/etc/skel</code> i configuració de les regles per defecte a <code>/etc/default/useradd</code>, <code>/etc/adduser.conf</code> i <code>/etc/login.defs</code>.</p>
 
-      <h3>Nivell 0: Preparar el cas</h3>
-      <p>Llistat dels diferents scripts al directori de treball amb permisos d'execució assignats (<code>-rwxr-xr-x</code>):</p>
-      <img src="../img/2.0.1.png" alt="Llistat dels scripts preparats amb permisos d'execució">
+      <h3>Nivell 0 · Els fitxers invisibles</h3>
+      <p>Exploració dels fitxers ocults de la carpeta personal amb <code>ls -a</code>, inspecció de la plantilla <code>/etc/skel</code> i verificació d'identitat amb <code>diff</code> respecte al <code>.bashrc</code> d'en Pau:</p>
+      <img src="../img/6.1.png" alt="Sortides de ls -a, ls -la /etc/skel i diff sense diferències">
 
-      <p>Execució inicial de <code>./sospitosos.sh</code> per llançar els processos que comprometen el rendiment del servidor:</p>
-      <img src="../img/2.0.2.png" alt="Execució inicial de sospitosos.sh">
+      <h4>Repte 0 · Fitxers ocults a l'entorn gràfic</h4>
+      <p>Visualització dels fitxers i carpetes ocults a l'aplicació Fitxers prement <code>Ctrl + H</code>:</p>
+      <img src="../img/6.1.1.png" alt="Aplicació Fitxers mostrant fitxers ocults">
 
-      <h3>Nivell 1: Reconeixement de processos</h3>
-      <p>Visualització de l'arbre de processos amb <code>pstree -p</code>, localitzant els scripts orfes (<code>backup_nocturn</code>, <code>espia</code> i <code>minador</code>) penjant directament sota <code>systemd(3008)</code>:</p>
-      <img src="../img/2.1.png" alt="Arbre de processos del sistema amb pstree localitzant processos orfes">
+      <h3>Nivell 1 · Llegir la configuració</h3>
+      <p>Consulta dels àlies definits a <code>~/.bashrc</code> amb <code>grep -n alias</code>, comprovació de <code>type ll</code> i revisió de les variables d'historial (<code>HISTSIZE</code> i <code>HISTFILESIZE</code>):</p>
+      <img src="../img/6.2.png" alt="Sortides de grep -n alias, type ll i grep -n HIST">
 
-      <h3>Nivell 2: Anàlisi de consum</h3>
-      <p>Monitorització de l'ús de CPU i memòria en temps real amb l'eina <code>top</code>, identificant els dos processos <code>minador</code> consumint el 100% d'un nucli de CPU:</p>
-      <img src="../img/2.2.png" alt="Pantalla de top ordenada pel consum de CPU">
+      <h4>Repte 1 · Identificació d'ordres amb type</h4>
+      <p>Anàlisi de <code>la</code> (àlies de <code>ls -A</code>), <code>cd</code> (ordre interna de bash) i <code>nano</code> (programa extern a <code>/usr/bin/nano</code>):</p>
+      <img src="../img/6.2.1.png" alt="Comprovació de type la cd nano">
 
-      <h3>Nivell 3: Interrogatori amb ps</h3>
-      <p>Cerca i filtratge ràpid dels PIDs dels processos sospitosos usant <code>pgrep -l</code>:</p>
-      <img src="../img/2.3.1.png" alt="Cerca dels PIDs dels processos sospitosos amb pgrep">
+      <h3>Nivell 2 · El teu terminal, el teu estil</h3>
+      <p>Obertura d'una pestanya nova carregant la personalització del <code>~/.bashrc</code> amb el missatge de benvinguda i el prompt <code>[ADMIN]</code>:</p>
+      <img src="../img/6.3.png" alt="Pestanya nova amb el missatge de benvinguda i el prompt [ADMIN]">
 
-      <p>Consulta detallada d'identificadors, usuari, estat, temps d'execució i consum mitjançant <code>ps -o</code>:</p>
-      <img src="../img/2.3.2.png" alt="Informació detallada de cada procés amb ps -o">
+      <p>Execució del nou àlies <code>nous</code> mostrant els quatre últims comptes creats a <code>/etc/passwd</code>:</p>
+      <img src="../img/6.3.1.png" alt="Sortida de l'àlies nous">
 
-      <p>Verificació del procés pare (PPID 3008) confirmant que correspon a <code>systemd</code>:</p>
-      <img src="../img/2.3.3.png" alt="Identificació del procés pare systemd">
+      <h4>Repte 2 · Ampliació de l'historial a 5000 ordres</h4>
+      <p>Adició de la línia <code>HISTSIZE=5000</code> al final de <code>~/.bashrc</code>:</p>
+      <img src="../img/6.3.2.png" alt="Afegit de HISTSIZE=5000 al final de ~/.bashrc">
 
-      <h3>Nivell 4: Control de primer i segon pla</h3>
-      <p>Pausa de la tasca <code>./descarrega.sh</code> amb <code>Ctrl + Z</code>, inspecció amb <code>jobs -l</code>, i pas entre segon pla (<code>bg %1</code>) i primer pla (<code>fg %1</code>):</p>
-      <img src="../img/2.4.1.png" alt="Gestió de treballs en primer i segon pla amb jobs, bg i fg">
+      <p>Comprovació del nou valor de <code>$HISTSIZE</code> en una pestanya nova:</p>
+      <img src="../img/6.3.3.png" alt="Verificació de echo $HISTSIZE amb valor 5000">
 
-      <p>Monitorització en temps real de l'avanç de la descàrrega mitjançant <code>watch -n 1 cat progres.txt</code>:</p>
-      <img src="../img/2.4.2.png" alt="Seguiment en temps real del fitxer progres.txt">
+      <h3>Nivell 3 · Entrar i sortir</h3>
+      <p>Verificació que l'àlies <code>nous</code> només existeix per a l'administrador i no per a l'usuari <code>pau</code>:</p>
+      <img src="../img/6.4.png" alt="Error en executar nous com a usuari pau">
 
-      <h3>Nivell 5: Prioritat de processos (nice / renice)</h3>
-      <p>Execució simultània de <code>top</code> i seguiment del progrés després d'ajustar la prioritat del procés per accelerar la descàrrega:</p>
-      <img src="../img/2.5.png" alt="Monitorització del rendiment i prioritat del procés descarrega.sh">
+      <p>Diferència entre un terminal gràfic normal (<code>shopt login_shell</code> → <code>off</code>) i un shell de login iniciat amb <code>bash -l</code> (<code>on</code>):</p>
+      <img src="../img/6.4.1.png" alt="Comprovació de shopt login_shell off i on">
 
-      <h3>Nivell 6: Neutralització d'intrusos</h3>
-      <p>Gestió de senyals sobre els processos sospitosos: resistència d'<code>espia</code> davant <code>SIGTERM</code> (15), finalització forçada amb <code>SIGKILL</code> (<code>kill -9</code>), i congelació/represa de <code>backup_nocturn</code> amb <code>SIGSTOP</code> i <code>SIGCONT</code>:</p>
-      <img src="../img/2.6.png" alt="Neutralització amb SIGKILL i control de senyals SIGSTOP/SIGCONT">
+      <p>Execució del missatge de comiat configurat a <code>~/.bash_logout</code> en sortir del shell de login amb <code>exit</code>:</p>
+      <img src="../img/6.4.2.png" alt="Missatge de comiat en sortir amb exit">
 
-      <h3>Nivell 7: Persistència de processos</h3>
-      <p>Traçat de l'arbre de jerarquia completa de <code>descarrega.sh</code> fins a <code>systemd(1)</code> amb <code>pstree -ps</code>:</p>
-      <img src="../img/2.7.1.png" alt="Jerarquia del procés descarrega.sh amb pstree -ps">
+      <h4>Repte 3 · Diferència entre su i su -</h4>
+      <p>Comprovació amb <code>su - pau</code> (amb guió), verificant que obre un shell de login (<code>on</code>) i situa la sessió al directori personal <code>/home/pau</code>, a diferència de <code>su pau</code> que manté l'entorn i la carpeta actual:</p>
+      <img src="../img/6.4.3.png" alt="Comprovació de su - pau amb shopt login_shell i pwd">
 
-      <p>Comprovació final de la descàrrega completada amb èxit en 35 segons després d'executar-la en mode persistent amb <code>nohup</code>:</p>
-      <img src="../img/2.7.2.png" alt="Verificació de la descàrrega completada amb nohup">
+      <h3>Nivell 4 · El kit de benvinguda</h3>
+      <p>Llistat de la plantilla <code>/etc/skel</code> amb el nou fitxer <code>BENVINGUDA.txt</code> i la carpeta <code>projectes</code>, i comparació de canvis al <code>.bashrc</code> model amb <code>diff</code>:</p>
+      <img src="../img/6.5.png" alt="Contingut de /etc/skel i diff del .bashrc model">
+
+      <h4>Repte 4 · Nou àlies equip al kit</h4>
+      <p>Incorporació de l'àlies <code>equip='groups'</code> al <code>/etc/skel/.bashrc</code> i verificació amb <code>diff</code>:</p>
+      <img src="../img/6.5.1.png" alt="Afegit de l'àlies equip i comprovació amb diff">
+
+      <h3>Nivell 5 · Primer dia de l'Ona</h3>
+      <p>Alta de l'usuària <code>ona</code>, inici de sessió rebent automàticament el kit de PixelForge (missatge d'entrada, prompt <code>[PixelForge]</code>, àlies <code>ajuda</code> i comiat), i comprovació que l'usuària antiga <code>nvidal</code> no el té:</p>
+      <img src="../img/6.6.png" alt="Inici de sessió de ona amb el kit i comprovació de nvidal">
+
+      <h4>Repte 5 · Còpia manual de BENVINGUDA.txt a nvidal</h4>
+      <p>Còpia de <code>BENVINGUDA.txt</code> a <code>/home/nvidal/</code> comprovant que el propietari resultant és <code>root:root</code> (fet que impedirà que la Núria el pugui editar o esborrar lliurement):</p>
+      <img src="../img/6.6.1.png" alt="Còpia de BENVINGUDA.txt a nvidal i comprovació de propietari">
+
+      <h3>Nivell 6 · Les regles d'useradd</h3>
+      <p>Comprovació inicial en crear <code>quim</code> amb <code>useradd -m</code>, assignant-li per defecte el shell <code>/bin/sh</code>:</p>
+      <img src="../img/6.7.png" alt="Primer getent passwd quim amb /bin/sh">
+
+      <p>Modificació del shell per defecte amb <code>sudo useradd -D -s /bin/bash</code> i verificació a <code>/etc/default/useradd</code>:</p>
+      <img src="../img/6.7.1.png" alt="Verificació de SHELL=/bin/bash amb useradd -D">
+
+      <p>Creació de nou de l'usuari <code>quim</code> sense l'opció <code>-s</code>, obtenint automàticament <code>/bin/bash</code>:</p>
+      <img src="../img/6.7.2.png" alt="Segon getent passwd quim amb /bin/bash">
+
+      <p>Inici de sessió com a <code>quim</code> comprovant el funcionament complet del kit de benvinguda i comiat:</p>
+      <img src="../img/6.7.3.png" alt="Entrada de quim amb el kit de PixelForge">
+
+      <h4>Repte 6 · Kit específic per a becaris</h4>
+      <p>Creació de la plantilla alternativa <code>/etc/skel_becaris</code> amb <code>NORMES.txt</code> i alta de <code>becari1</code> amb <code>useradd -m -k</code>, comprovant que només rep aquest fitxer perquè <code>-k</code> substitueix <code>/etc/skel</code>:</p>
+      <img src="../img/6.7.4.png" alt="Creació de /etc/skel_becaris i comprovació de /home/becari1">
+
+      <h3>Nivell 7 · Les regles d'adduser</h3>
+      <p>Activació de <code>EXTRA_GROUPS="pixelforge"</code> i <code>ADD_EXTRA_GROUPS=1</code> a <code>/etc/adduser.conf</code>, alta d'en <code>biel</code> i comparació de grups amb l'<code>ona</code>:</p>
+      <img src="../img/6.8.png" alt="Configuració de /etc/adduser.conf, alta de biel i comparació amb id">
+
+      <h4>Repte 7 · Inclusió d'ona a pixelforge i comprovació de DIR_MODE</h4>
+      <p>Adició d'<code>ona</code> al grup <code>pixelforge</code> amb <code>usermod -aG</code> i comprovació de <code>DIR_MODE=0750</code> reflectit als permisos <code>drwxr-x---</code> de <code>/home/biel</code>:</p>
+      <img src="../img/6.8.1.png" alt="Afegit d'ona a pixelforge i comprovació de DIR_MODE">
+
+      <h3>Nivell 8 · Les normes de l'empresa</h3>
+      <p>Configuració de la caducitat de contrasenyes a <code>/etc/login.defs</code> (<code>PASS_MAX_DAYS 90</code> i <code>PASS_WARN_AGE 14</code>), comprovant que s'aplica a la nova usuària <code>jana</code> mentre que l'<code>ona</code> manté <code>99999</code> i <code>7</code>:</p>
+      <img src="../img/6.9.png" alt="Valors PASS_ a /etc/login.defs i comparació de chage -l entre jana i ona">
+
+      <h4>Repte 8 · Creació automàtica de carpeta amb CREATE_HOME yes</h4>
+      <p>Adició de <code>CREATE_HOME yes</code> al final de <code>/etc/login.defs</code> i verificació creant l'usuari <code>prova</code> amb <code>sudo useradd prova</code> sense opció <code>-m</code>:</p>
+      <img src="../img/6.9.1.png" alt="Prova de CREATE_HOME yes amb useradd prova">
 
       <p class="tornar-index"><a href="#index-apartats">↑ Tornar a l'índex</a></p>
     </article>
 
     <!-- APARTAT 4 -->
     <article class="apartat" id="apartat4">
-      <h2>4. Còpies de seguretat i automatització (Escape room · L'arxiu perdut)</h2>
-      <p>Pràctica de còpies de seguretat manuals, incrementals, imatges de disc i automatització amb <code>cp</code>, <code>rsync</code>, <code>dd</code>, Déjà Dup, <code>cron</code> i <code>anacron</code>.</p>
-
-      <h3>Nivell 0: Preparar l'arxiu</h3>
-      <p>Preparació de la sala de joc amb <code>./crea_sala.sh</code> i comprovació de les dues particions del nou disc d'1 GB (<code>copies</code> i <code>caixa</code>) muntades a <code>/mnt/copies</code> i <code>/mnt/caixa</code>:</p>
-      <img src="../img/4.1.png" alt="Sortida de crea_sala.sh i lsblk -f /dev/sdc">
-
-      <h3>Sala 1: La còpia amb cp</h3>
-      <p>Estat de la sala després del desastre 1, restauració de la carpeta <code>expedients</code> des de la còpia realitzada amb <code>cp -a</code> i obtenció de la primera clau (<code>UNA</code>):</p>
-      <img src="../img/4.2.png" alt="Recuperació amb cp -a i lectura de clau1.txt">
-
-      <h3>Sala 2: La còpia amb rsync</h3>
-      <p>Simulació amb <code>--dry-run</code> detectant l'esborrat de la clau, recuperació de <code>clau2.txt</code> (<code>CÒPIA</code>) i sincronització segura guardant els arxius eliminats a <code>/mnt/copies/esborrats</code>:</p>
-      <img src="../img/4.3.png" alt="Sincronització amb rsync, lectura de clau2.txt i còpia d'esborrats">
-
-      <h3>Sala 3: La imatge amb dd</h3>
-      <p>Verificació mitjançant hash SHA-256 de la identitat exacta entre la partició <code>/dev/sdc2</code> i la imatge de disc <code>caixa.img</code>:</p>
-      <img src="../img/4.4.1.png" alt="Comprovació dels hashes SHA-256 de /dev/sdc2 i caixa.img">
-
-      <p>Comprovació del contingut de <code>/mnt/caixa</code> després del desastre 3 (només hi queda la carpeta <code>lost+found</code> arran del formateig):</p>
-      <img src="../img/4.4.2.png" alt="Contingut buit de /mnt/caixa després del formateig">
-
-      <p>Restauració de la imatge de disc amb <code>dd</code> sobre <code>/dev/sdc2</code> i lectura de la tercera clau (<code>SENSE</code>):</p>
-      <img src="../img/4.4.3.png" alt="Lectura de clau3.txt després de restaurar la imatge amb dd">
-
-      <h3>Sala 4: Déjà Dup</h3>
-      <p>Execució de les còpies de seguretat completa i incremental des de l'aplicació gràfica de Còpies de seguretat d'Ubuntu:</p>
-      <img src="../img/4.5.1.png" alt="Finestra de Còpies de seguretat (Déjà Dup) amb la còpia realitzada">
-
-      <p>Exploració del punt de restauració per recuperar el fitxer <code>clau4.txt</code> cap a <code>~/sala/notes</code>:</p>
-      <img src="../img/4.5.2.png" alt="Explorador de fitxers mostrant la còpia de seguretat amb clau4.txt">
-
-      <p>Lectura de la quarta clau recuperada després del desastre 4 (<code>PROVAR</code>):</p>
-      <img src="../img/4.5.3.png" alt="Lectura de clau4.txt restaurada amb Déjà Dup">
-
-      <h3>Sala 5: La còpia de cada nit amb cron</h3>
-      <p>Registre <code>~/copies.log</code> demostrant l'execució automàtica per <code>cron</code> amb la cinquena clau (<code>NO</code>) i programació definitiva al <code>crontab</code> a les 2:00 de la matinada:</p>
-      <img src="../img/4.6.png" alt="Registre ~/copies.log amb la clau 5 i sortida de crontab -l">
-
-      <h3>Sala 6: L'informe diari amb anacron</h3>
-      <p>Sortida de <code>/var/log/informe-sala.log</code> generada per <code>anacron</code> en arrancar el sistema amb la sisena clau (<code>SERVEIX</code>), marca de data actualitzada a <code>/var/spool/anacron/cron.daily</code> i frase secreta completa (<code>UNA COPIA SENSE PROVAR NO SERVEIX</code>):</p>
-      <img src="../img/4.7.png" alt="Informe diari d'anacron, marca de data i frase secreta final">
-
-      <p class="tornar-index"><a href="#index-apartats">↑ Tornar a l'índex</a></p>
-    </article>
-
-    <!-- APARTAT 5 -->
-    <article class="apartat" id="apartat5">
-      <h2>5. Gestió de permisos (Missió «PixelForge», 3a part)</h2>
+      <h2>4. Gestió de permisos (3a part PixelForge)</h2>
       <p>Configuració de permisos estàndard, propietat, permisos especials (SGID, Sticky bit, SUID), llistes de control d'accés (ACL) i màscara <code>umask</code> a l'entorn de treball <code>/srv/pixelforge</code>.</p>
 
       <h3>Nivell 0 · Muntar l'estudi</h3>
@@ -533,6 +532,109 @@
       <h4>Repte 8 · Anàlisi de la màscara 137</h4>
       <p>Prova pràctica de <code>umask 137</code>: tant el fitxer (<code>-rw-r-----</code>, <code>640</code>) com la carpeta (<code>drw-r-----</code>, <code>640</code>) es creen sense permís d'execució <code>x</code>, fet que impedeix accedir dins de <code>carpeta_137</code> amb <code>cd</code> (<code>S'ha denegat el permís</code>):</p>
       <img src="../img/5.9.1.png" alt="Prova de umask 137 i error d'accés a carpeta_137">
+
+      <p class="tornar-index"><a href="#index-apartats">↑ Tornar a l'índex</a></p>
+    </article>
+
+    <!-- APARTAT 5 -->
+    <article class="apartat" id="apartat5">
+      <h2>5. Gestió de processos del sistema</h2>
+      <p>Control, diagnòstic, prioritats i gestió de senyals sobre els processos en executació.</p>
+
+      <h3>Nivell 0: Preparar el cas</h3>
+      <p>Llistat dels diferents scripts al directori de treball amb permisos d'execució assignats (<code>-rwxr-xr-x</code>):</p>
+      <img src="../img/2.0.1.png" alt="Llistat dels scripts preparats amb permisos d'execució">
+
+      <p>Execució inicial de <code>./sospitosos.sh</code> per llançar els processos que comprometen el rendiment del servidor:</p>
+      <img src="../img/2.0.2.png" alt="Execució inicial de sospitosos.sh">
+
+      <h3>Nivell 1: Reconeixement de processos</h3>
+      <p>Visualització de l'arbre de processos amb <code>pstree -p</code>, localitzant els scripts orfes (<code>backup_nocturn</code>, <code>espia</code> i <code>minador</code>) penjant directament sota <code>systemd(3008)</code>:</p>
+      <img src="../img/2.1.png" alt="Arbre de processos del sistema amb pstree localitzant processos orfes">
+
+      <h3>Nivell 2: Anàlisi de consum</h3>
+      <p>Monitorització de l'ús de CPU i memòria en temps real amb l'eina <code>top</code>, identificant els dos processos <code>minador</code> consumint el 100% d'un nucli de CPU:</p>
+      <img src="../img/2.2.png" alt="Pantalla de top ordenada pel consum de CPU">
+
+      <h3>Nivell 3: Interrogatori amb ps</h3>
+      <p>Cerca i filtratge ràpid dels PIDs dels processos sospitosos usant <code>pgrep -l</code>:</p>
+      <img src="../img/2.3.1.png" alt="Cerca dels PIDs dels processos sospitosos amb pgrep">
+
+      <p>Consulta detallada d'identificadors, usuari, estat, temps d'execució i consum mitjançant <code>ps -o</code>:</p>
+      <img src="../img/2.3.2.png" alt="Informació detallada de cada procés amb ps -o">
+
+      <p>Verificació del procés pare (PPID 3008) confirmant que correspon a <code>systemd</code>:</p>
+      <img src="../img/2.3.3.png" alt="Identificació del procés pare systemd">
+
+      <h3>Nivell 4: Control de primer i segon pla</h3>
+      <p>Pausa de la tasca <code>./descarrega.sh</code> amb <code>Ctrl + Z</code>, inspecció amb <code>jobs -l</code>, i pas entre segon pla (<code>bg %1</code>) i primer pla (<code>fg %1</code>):</p>
+      <img src="../img/2.4.1.png" alt="Gestió de treballs en primer i segon pla amb jobs, bg i fg">
+
+      <p>Monitorització en temps real de l'avanç de la descàrrega mitjançant <code>watch -n 1 cat progres.txt</code>:</p>
+      <img src="../img/2.4.2.png" alt="Seguiment en temps real del fitxer progres.txt">
+
+      <h3>Nivell 5: Prioritat de processos (nice / renice)</h3>
+      <p>Execució simultània de <code>top</code> i seguiment del progrés després d'ajustar la prioritat del procés per accelerar la descàrrega:</p>
+      <img src="../img/2.5.png" alt="Monitorització del rendiment i prioritat del procés descarrega.sh">
+
+      <h3>Nivell 6: Neutralització d'intrusos</h3>
+      <p>Gestió de senyals sobre els processos sospitosos: resistència d'<code>espia</code> davant <code>SIGTERM</code> (15), finalització forçada amb <code>SIGKILL</code> (<code>kill -9</code>), i congelació/represa de <code>backup_nocturn</code> amb <code>SIGSTOP</code> i <code>SIGCONT</code>:</p>
+      <img src="../img/2.6.png" alt="Neutralització amb SIGKILL i control de senyals SIGSTOP/SIGCONT">
+
+      <h3>Nivell 7: Persistència de processos</h3>
+      <p>Traçat de l'arbre de jerarquia completa de <code>descarrega.sh</code> fins a <code>systemd(1)</code> amb <code>pstree -ps</code>:</p>
+      <img src="../img/2.7.1.png" alt="Jerarquia del procés descarrega.sh amb pstree -ps">
+
+      <p>Comprovació final de la descàrrega completada amb èxit en 35 segons després d'executar-la en mode persistent amb <code>nohup</code>:</p>
+      <img src="../img/2.7.2.png" alt="Verificació de la descàrrega completada amb nohup">
+
+      <p class="tornar-index"><a href="#index-apartats">↑ Tornar a l'índex</a></p>
+    </article>
+
+    <!-- APARTAT 6 -->
+    <article class="apartat" id="apartat6">
+      <h2>6. Còpies de seguretat i automatització (Escape room · L'arxiu perdut)</h2>
+      <p>Pràctica de còpies de seguretat manuals, incrementals, imatges de disc i automatització amb <code>cp</code>, <code>rsync</code>, <code>dd</code>, Déjà Dup, <code>cron</code> i <code>anacron</code>.</p>
+
+      <h3>Nivell 0: Preparar l'arxiu</h3>
+      <p>Preparació de la sala de joc amb <code>./crea_sala.sh</code> i comprovació de les dues particions del nou disc d'1 GB (<code>copies</code> i <code>caixa</code>) muntades a <code>/mnt/copies</code> i <code>/mnt/caixa</code>:</p>
+      <img src="../img/4.1.png" alt="Sortida de crea_sala.sh i lsblk -f /dev/sdc">
+
+      <h3>Sala 1: La còpia amb cp</h3>
+      <p>Estat de la sala després del desastre 1, restauració de la carpeta <code>expedients</code> des de la còpia realitzada amb <code>cp -a</code> i obtenció de la primera clau (<code>UNA</code>):</p>
+      <img src="../img/4.2.png" alt="Recuperació amb cp -a i lectura de clau1.txt">
+
+      <h3>Sala 2: La còpia amb rsync</h3>
+      <p>Simulació amb <code>--dry-run</code> detectant l'esborrat de la clau, recuperació de <code>clau2.txt</code> (<code>CÒPIA</code>) i sincronització segura guardant els arxius eliminats a <code>/mnt/copies/esborrats</code>:</p>
+      <img src="../img/4.3.png" alt="Sincronització amb rsync, lectura de clau2.txt i còpia d'esborrats">
+
+      <h3>Sala 3: La imatge amb dd</h3>
+      <p>Verificació mitjançant hash SHA-256 de la identitat exacta entre la partició <code>/dev/sdc2</code> i la imatge de disc <code>caixa.img</code>:</p>
+      <img src="../img/4.4.1.png" alt="Comprovació dels hashes SHA-256 de /dev/sdc2 i caixa.img">
+
+      <p>Comprovació del contingut de <code>/mnt/caixa</code> després del desastre 3 (només hi queda la carpeta <code>lost+found</code> arran del formateig):</p>
+      <img src="../img/4.4.2.png" alt="Contingut buit de /mnt/caixa després del formateig">
+
+      <p>Restauració de la imatge de disc amb <code>dd</code> sobre <code>/dev/sdc2</code> i lectura de la tercera clau (<code>SENSE</code>):</p>
+      <img src="../img/4.4.3.png" alt="Lectura de clau3.txt després de restaurar la imatge amb dd">
+
+      <h3>Sala 4: Déjà Dup</h3>
+      <p>Execució de les còpies de seguretat completa i incremental des de l'aplicació gràfica de Còpies de seguretat d'Ubuntu:</p>
+      <img src="../img/4.5.1.png" alt="Finestra de Còpies de seguretat (Déjà Dup) amb la còpia realitzada">
+
+      <p>Exploració del punt de restauració per recuperar el fitxer <code>clau4.txt</code> cap a <code>~/sala/notes</code>:</p>
+      <img src="../img/4.5.2.png" alt="Explorador de fitxers mostrant la còpia de seguretat amb clau4.txt">
+
+      <p>Lectura de la quarta clau recuperada després del desastre 4 (<code>PROVAR</code>):</p>
+      <img src="../img/4.5.3.png" alt="Lectura de clau4.txt restaurada amb Déjà Dup">
+
+      <h3>Sala 5: La còpia de cada nit amb cron</h3>
+      <p>Registre <code>~/copies.log</code> demostrant l'execució automàtica per <code>cron</code> amb la cinquena clau (<code>NO</code>) i programació definitiva al <code>crontab</code> a les 2:00 de la matinada:</p>
+      <img src="../img/4.6.png" alt="Registre ~/copies.log amb la clau 5 i sortida de crontab -l">
+
+      <h3>Sala 6: L'informe diari amb anacron</h3>
+      <p>Sortida de <code>/var/log/informe-sala.log</code> generada per <code>anacron</code> en arrancar el sistema amb la sisena clau (<code>SERVEIX</code>), marca de data actualitzada a <code>/var/spool/anacron/cron.daily</code> i frase secreta completa (<code>UNA COPIA SENSE PROVAR NO SERVEIX</code>):</p>
+      <img src="../img/4.7.png" alt="Informe diari d'anacron, marca de data i frase secreta final">
 
       <p class="tornar-index"><a href="#index-apartats">↑ Tornar a l'índex</a></p>
     </article>
