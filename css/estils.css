@@ -1,7 +1,4 @@
-/* Full de estils comu per a tot el lloc.
-   Enllaça-la sempre igual:
-   <link rel="stylesheet" href="../css/estils.css">  (des d'una carpeta de sprint)
-   <link rel="stylesheet" href="css/estils.css">      (des de l'arrel) */
+/* Full de estils comu per a tot el lloc. */
 
 :root {
   --mari: #122542;
@@ -18,7 +15,7 @@
 * { box-sizing: border-box; }
 
 html {
-  scroll-behavior: smooth;
+  scroll-behavior: smooth !important;
 }
 
 body {
@@ -27,6 +24,7 @@ body {
   color: var(--tinta);
   background: var(--fons);
   line-height: 1.55;
+  scroll-behavior: smooth;
 }
 
 a { color: var(--teal); text-decoration: none; }
@@ -38,7 +36,7 @@ a:hover { text-decoration: underline; }
   padding: 0 20px;
 }
 
-/* ---------- Capçalera / hero (present a totes les pàgines) ---------- */
+/* ---------- Capçalera / hero ---------- */
 .hero {
   background: linear-gradient(125deg, var(--mari) 0%, var(--teal) 55%, var(--ambre) 100%);
   padding-bottom: 60px;
@@ -61,11 +59,11 @@ a:hover { text-decoration: underline; }
   border-radius: 999px;
   font-size: 0.85rem;
   text-decoration: none;
-  transition: background 0.2s ease, transform 0.2s ease;
+  transition: background 0.25s ease, transform 0.25s ease;
 }
 .hero-nav a:hover {
   background: rgba(255, 255, 255, 0.24);
-  transform: translateY(-1px);
+  transform: translateY(-2px);
   text-decoration: none;
 }
 
@@ -93,7 +91,7 @@ a:hover { text-decoration: underline; }
   font-size: 1.05rem;
 }
 
-/* ---------- Panell blanc flotant que xafa el hero ---------- */
+/* ---------- Panell blanc flotant ---------- */
 main { padding-bottom: 50px; }
 
 .panell {
@@ -136,14 +134,14 @@ main { padding-bottom: 50px; }
   font-weight: 600;
   text-decoration: none !important;
   margin-top: 8px;
-  transition: background 0.2s ease, transform 0.2s ease;
+  transition: background 0.25s ease, transform 0.25s ease;
 }
 .boto:hover {
   background: var(--mari);
   transform: translateY(-2px);
 }
 
-/* ---------- Graella de targetes (sprints / apartats) ---------- */
+/* ---------- Graella de targetes ---------- */
 .rejilla-targetes {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -186,7 +184,7 @@ h1, h2 { color: var(--mari); }
 }
 .consell code { background: var(--fons); padding: 1px 5px; border-radius: 4px; }
 
-/* ---------- Taula d'apartats (índex intern d'un sprint, amb ancoratges) ---------- */
+/* ---------- Taula d'apartats (índex intern) ---------- */
 .taula-apartats {
   width: 100%;
   border-collapse: collapse;
@@ -205,33 +203,41 @@ h1, h2 { color: var(--mari); }
 }
 .taula-apartats td:first-child, .taula-apartats th:first-child { width: 46px; color: var(--tinta-suau); }
 .taula-apartats tr {
-  transition: background-color 0.2s ease;
+  transition: background-color 0.25s ease;
 }
 .taula-apartats tr:hover td { background: var(--fons); }
 .taula-apartats a {
   font-weight: 600;
   display: inline-block;
-  transition: transform 0.2s ease, color 0.2s ease;
+  transition: transform 0.25s ease, color 0.25s ease;
 }
 .taula-apartats a:hover {
-  transform: translateX(5px);
+  transform: translateX(6px);
+  color: var(--mari);
 }
 
-/* ---------- Contingut d'un apartat i animacions ---------- */
-@keyframes apareixerSuau {
-  from {
+/* ---------- Animacions d'apartats i navegació ---------- */
+@keyframes aparicioScroll {
+  0% {
     opacity: 0;
-    transform: translateY(22px);
+    transform: translateY(35px) scale(0.98);
   }
-  to {
+  100% {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
   }
 }
 
-@keyframes ressaltatDesti {
-  0% { background-color: rgba(12, 110, 115, 0.12); border-radius: var(--radi); }
-  100% { background-color: transparent; }
+@keyframes flashSeccio {
+  0% {
+    background-color: rgba(12, 110, 115, 0.18);
+    box-shadow: 0 0 0 8px rgba(12, 110, 115, 0.18);
+    border-radius: var(--radi);
+  }
+  100% {
+    background-color: transparent;
+    box-shadow: 0 0 0 0 transparent;
+  }
 }
 
 .apartat,
@@ -245,24 +251,24 @@ h1, h2 { color: var(--mari); }
   padding-top: 26px;
   margin-top: 26px;
   border-top: 1px solid var(--vora);
-  animation: apareixerSuau 0.65s ease-out both;
+  animation: aparicioScroll 0.7s ease-out both;
 }
 
-/* Animació progressiva en fer scroll cap avall */
+/* Animació vinculada a l'scroll en navegadors moderns (Chrome/Edge) */
 @supports (animation-timeline: view()) {
   .apartat {
-    animation: apareixerSuau linear both;
+    animation: aparicioScroll linear both;
     animation-timeline: view();
-    animation-range: entry 0% cover 18%;
+    animation-range: entry 0% cover 22%;
   }
 }
 
-/* Ressaltat breu en clicar un enllaç de l'índex */
+/* Efecte de ressaltat quan cliques un enllaç de l'índex */
 .apartat:target,
 #apartat1-1:target,
 #apartat1-2:target,
 #apartat1-3:target {
-  animation: ressaltatDesti 1.3s ease-out;
+  animation: flashSeccio 1.5s ease-out;
 }
 
 .apartat h2 { margin-top: 0; }
@@ -274,8 +280,8 @@ h1, h2 { color: var(--mari); }
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 .apartat img:hover {
-  transform: scale(1.01);
-  box-shadow: 0 6px 18px rgba(18, 37, 66, 0.12);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(18, 37, 66, 0.14);
 }
 .apartat ul { padding-left: 22px; }
 .apartat li { margin: 4px 0; }
@@ -286,10 +292,11 @@ h1, h2 { color: var(--mari); }
   transition: transform 0.2s ease, color 0.2s ease;
 }
 .tornar-index a:hover {
-  transform: translateY(-2px);
+  transform: translateY(-3px);
+  color: var(--mari);
 }
 
-/* ---------- Peu de pàgina: llicència i autoria (fix a totes les pàgines) ---------- */
+/* ---------- Peu de pàgina ---------- */
 footer.peu {
   text-align: center;
   color: var(--tinta-suau);
@@ -308,7 +315,7 @@ footer.peu {
 footer.peu .autoria { margin: 0; }
 footer.peu .autoria strong { color: var(--tinta); }
 
-/* ---------- Bloc de llicència a la portada ---------- */
+/* ---------- Bloc de llicència ---------- */
 .bloc-llicencia {
   border: 1px solid var(--vora);
   border-radius: var(--radi);
