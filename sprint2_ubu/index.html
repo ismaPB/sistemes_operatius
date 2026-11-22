@@ -33,6 +33,7 @@
         <tr><td>1</td><td><a href="#apartat1">Sistemes de fitxers, particions i recuperació</a></td></tr>
         <tr><td>2</td><td><a href="#apartat2">Gestió d'usuaris i grups</a></td></tr>
         <tr><td>3</td><td><a href="#apartat3">Gestió de processos del sistema</a></td></tr>
+        <tr><td>4</td><td><a href="#apartat4">Còpies de seguretat i automatització (Escape room · L'arxiu perdut)</a></td></tr>
       </tbody>
     </table>
 
@@ -337,7 +338,7 @@
 
       <h3>Nivell 8: Fi de pràctiques i neteja final</h3>
       <p>Eliminació de l'usuària <code>laia</code> amb <code>userdel</code>, comprovació del directori orfe (UID 1008), esborrat de la carpeta personal amb <code>rm -r</code>, eliminació del grup <code>becaris</code> amb <code>delgroup</code> i estat final del sistema:</p>
-      <img src="../img/3.21.png" alt="Baixa de laia, eliminació de directori orfe, esborrat de grup i comprovació final d'usuaris i grups">
+      <img src="../img/3.21.jpg" alt="Baixa de laia, eliminació de directori orfe, esborrat de grup i comprovació final d'usuaris i grups">
 
       <p class="tornar-index"><a href="#index-apartats">↑ Tornar a l'índex</a></p>
     </article>
@@ -392,6 +393,53 @@
 
       <p>Comprovació final de la descàrrega completada amb èxit en 35 segons després d'executar-la en mode persistent amb <code>nohup</code>:</p>
       <img src="../img/2.7.2.png" alt="Verificació de la descàrrega completada amb nohup">
+
+      <p class="tornar-index"><a href="#index-apartats">↑ Tornar a l'índex</a></p>
+    </article>
+
+    <article class="apartat" id="apartat4">
+      <h2>4. Còpies de seguretat i automatització (Escape room · L'arxiu perdut)</h2>
+      <p>Pràctica de còpies de seguretat manuals, incrementals, imatges de disc i automatització amb <code>cp</code>, <code>rsync</code>, <code>dd</code>, Déjà Dup, <code>cron</code> i <code>anacron</code>.</p>
+
+      <h3>Nivell 0: Preparar l'arxiu</h3>
+      <p>Preparació de la sala de joc amb <code>./crea_sala.sh</code> i comprovació de les dues particions del nou disc d'1 GB (<code>copies</code> i <code>caixa</code>) muntades a <code>/mnt/copies</code> i <code>/mnt/caixa</code>:</p>
+      <img src="../img/4.1.png" alt="Sortida de crea_sala.sh i lsblk -f /dev/sdc">
+
+      <h3>Sala 1: La còpia amb cp</h3>
+      <p>Estat de la sala després del desastre 1, restauració de la carpeta <code>expedients</code> des de la còpia realitzada amb <code>cp -a</code> i obtenció de la primera clau (<code>UNA</code>):</p>
+      <img src="../img/4.2.png" alt="Recuperació amb cp -a i lectura de clau1.txt">
+
+      <h3>Sala 2: La còpia amb rsync</h3>
+      <p>Simulació amb <code>--dry-run</code> detectant l'esborrat de la clau, recuperació de <code>clau2.txt</code> (<code>CÒPIA</code>) i sincronització segura guardant els arxius eliminats a <code>/mnt/copies/esborrats</code>:</p>
+      <img src="../img/4.3.png" alt="Sincronització amb rsync, lectura de clau2.txt i còpia d'esborrats">
+
+      <h3>Sala 3: La imatge amb dd</h3>
+      <p>Verificació mitjançant hash SHA-256 de la identitat exacta entre la partició <code>/dev/sdc2</code> i la imatge de disc <code>caixa.img</code>:</p>
+      <img src="../img/4.4.1.png" alt="Comprovació dels hashes SHA-256 de /dev/sdc2 i caixa.img">
+
+      <p>Comprovació del contingut de <code>/mnt/caixa</code> després del desastre 3 (només hi queda la carpeta <code>lost+found</code> arran del formateig):</p>
+      <img src="../img/4.4.2.png" alt="Contingut buit de /mnt/caixa després del formateig">
+
+      <p>Restauració de la imatge de disc amb <code>dd</code> sobre <code>/dev/sdc2</code> i lectura de la tercera clau (<code>SENSE</code>):</p>
+      <img src="../img/4.4.3.png" alt="Lectura de clau3.txt després de restaurar la imatge amb dd">
+
+      <h3>Sala 4: Déjà Dup</h3>
+      <p>Execució de les còpies de seguretat completa i incremental des de l'aplicació gràfica de Còpies de seguretat d'Ubuntu:</p>
+      <img src="../img/4.5.1.png" alt="Finestra de Còpies de seguretat (Déjà Dup) amb la còpia realitzada">
+
+      <p>Exploració del punt de restauració per recuperar el fitxer <code>clau4.txt</code> cap a <code>~/sala/notes</code>:</p>
+      <img src="../img/4.5.2.png" alt="Explorador de fitxers mostrant la còpia de seguretat amb clau4.txt">
+
+      <p>Lectura de la quarta clau recuperada després del desastre 4 (<code>PROVAR</code>):</p>
+      <img src="../img/4.5.3.png" alt="Lectura de clau4.txt restaurada amb Déjà Dup">
+
+      <h3>Sala 5: La còpia de cada nit amb cron</h3>
+      <p>Registre <code>~/copies.log</code> demostrant l'execució automàtica per <code>cron</code> amb la cinquena clau (<code>NO</code>) i programació definitiva al <code>crontab</code> a les 2:00 de la matinada:</p>
+      <img src="../img/4.6.png" alt="Registre ~/copies.log amb la clau 5 i sortida de crontab -l">
+
+      <h3>Sala 6: L'informe diari amb anacron</h3>
+      <p>Sortida de <code>/var/log/informe-sala.log</code> generada per <code>anacron</code> en arrancar el sistema amb la sisena clau (<code>SERVEIX</code>), marca de data actualitzada a <code>/var/spool/anacron/cron.daily</code> i frase secreta completa (<code>UNA COPIA SENSE PROVAR NO SERVEIX</code>):</p>
+      <img src="../img/4.7.png" alt="Informe diari d'anacron, marca de data i frase secreta final">
 
       <p class="tornar-index"><a href="#index-apartats">↑ Tornar a l'índex</a></p>
     </article>
